@@ -1,0 +1,2 @@
+class NotEnoughPowerError(Exception):
+    pass
