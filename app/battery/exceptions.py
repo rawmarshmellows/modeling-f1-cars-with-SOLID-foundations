@@ -1,0 +1,2 @@
+class NotEnoughElectricityError(Exception):
+    pass
