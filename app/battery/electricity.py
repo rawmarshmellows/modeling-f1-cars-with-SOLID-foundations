@@ -1,30 +1,23 @@
-
 class Electricity:
-    """
-    Electricity is a unit of energy. It is measured in watts.
-    """
-    @classmethod
-    def create_from_amount_in_watts(cls, amount_in_watts):
-        return cls(amount_in_watts)
+    """An amount of electrical energy, stored in kilojoules."""
 
-    def __init__(self, amount):
-        self._amount = amount
-    
-    @property    
-    def amount_in_kilowatts(self):
-        return self._amount / 1000
-    
-    @property    
-    def amount_in_watts(self):
-        return self._amount
+    @classmethod
+    def create_from_amount_in_kilojoules(cls, amount_in_kilojoules):
+        return cls(amount_in_kilojoules)
+
+    def __init__(self, amount_in_kilojoules):
+        self._amount_in_kilojoules = amount_in_kilojoules
+
+    @property
+    def amount_in_kilojoules(self):
+        return self._amount_in_kilojoules
+
+    @property
+    def amount_in_megajoules(self):
+        return self._amount_in_kilojoules / 1000
 
     def __add__(self, other):
-        return Electricity(self.amount_in_watts + other.amount_in_watts)
+        return Electricity(self.amount_in_kilojoules + other.amount_in_kilojoules)
 
     def __sub__(self, other):
-        return Electricity(self.amount_in_watts - other.amount_in_watts)
-
-
-    
-
-    
+        return Electricity(self.amount_in_kilojoules - other.amount_in_kilojoules)

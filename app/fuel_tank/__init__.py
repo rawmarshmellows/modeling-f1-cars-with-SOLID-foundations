@@ -1,2 +1,2 @@
-from .exceptions import NotEnoughFuelError
-from .factory import FuelTankFactory
+from app.fuel_tank.exceptions import NotEnoughFuelError
+from app.fuel_tank.factory import FuelTankFactory

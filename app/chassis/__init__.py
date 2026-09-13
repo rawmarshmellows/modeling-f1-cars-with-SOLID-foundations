@@ -1,1 +1,1 @@
-from .factory import ChassisFactory
+from app.chassis.factory import ChassisFactory

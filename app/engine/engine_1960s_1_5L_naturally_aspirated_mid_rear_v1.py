@@ -1,4 +1,7 @@
-class Engine1960s_1_5L_NaturallyAspirated_MidRear_v1:
+from app.f1_cars.engine_interface import EngineInterface
+
+
+class Engine1960s_1_5L_NaturallyAspirated_MidRear_v1(EngineInterface):
     def __init__(self):
         self.has_started = False
 
@@ -10,9 +13,8 @@ class Engine1960s_1_5L_NaturallyAspirated_MidRear_v1:
         self.has_started = False
         print("Engine has stopped")
 
-    def inject_fuel(self, fuel):
-        print(f"Inject {fuel.amount_in_milliliters}mL of fuel into engine with better efficiency")
-
     def inject_air(self):
-        print("logic to inject air into engine")
+        print("Inject air into mid-rear engine")
 
+    def inject_fuel(self, fuel):
+        print(f"Inject {fuel.amount_in_milliliters}mL of fuel into engine")

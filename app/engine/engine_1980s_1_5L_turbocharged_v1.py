@@ -10,9 +10,8 @@ class Engine1980s_1_5L_TurboCharged_v1:
         self.has_started = False
         print("Engine has stopped")
 
-    def inject_fuel(self, fuel):
-        print(f"Inject {fuel.amount_in_milliliters}mL of fuel into engine with better efficiency")
-
     def inject_air(self):
-        print("Inject air into engine with better efficiency")
+        print("Inject air into engine through turbocharger")
 
+    def inject_fuel(self, fuel):
+        print(f"Inject {fuel.amount_in_milliliters}mL of fuel into engine")

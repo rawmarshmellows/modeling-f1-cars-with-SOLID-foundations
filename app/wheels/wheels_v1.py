@@ -1,2 +1,2 @@
-class Wheels_v1 :
+class Wheels_v1:
     pass

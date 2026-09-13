@@ -1,4 +1,7 @@
-class Engine1950s_1_5L_Supercharged_v1:
+from app.f1_cars.engine_interface import EngineInterface
+
+
+class Engine1950s_1_5L_Supercharged_v1(EngineInterface):
     def __init__(self):
         self.has_started = False
 
@@ -10,9 +13,8 @@ class Engine1950s_1_5L_Supercharged_v1:
         self.has_started = False
         print("Engine has stopped")
 
+    def inject_air(self):
+        print("Inject air into engine through supercharger")
+
     def inject_fuel(self, fuel):
         print(f"Inject {fuel.amount_in_milliliters}mL of fuel into engine")
-
-    def inject_air(self):
-        print("inject air into engine through supercharger")
-

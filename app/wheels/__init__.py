@@ -1,1 +1,1 @@
-from .factory import WheelsFactory
+from app.wheels.factory import WheelsFactory

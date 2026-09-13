@@ -1,8 +1,9 @@
-from ..engine.engine_1950s_1_5L_supercharged_v1 import Engine1950s_1_5L_Supercharged_v1
-from ..chassis.chassis_spaceframe_v1 import Chassis_Spaceframe_v1
-from ..wheels.wheels_v1 import Wheels_v1
-from ..fuel_tank.fuel_tank_v1 import FuelTank_v1
-from ..fuel_tank.fuel import Fuel
+from app.chassis.chassis_spaceframe_v1 import Chassis_Spaceframe_v1
+from app.engine.engine_1950s_1_5L_supercharged_v1 import Engine1950s_1_5L_Supercharged_v1
+from app.fuel_tank.fuel import Fuel
+from app.fuel_tank.fuel_tank_v1 import FuelTank_v1
+from app.wheels.wheels_v1 import Wheels_v1
+
 
 class F1Car_v1:
     def __init__(self):
@@ -21,17 +22,16 @@ class F1Car_v1:
         return Wheels_v1()
 
     def _construct_fuel_tank(self):
-        return FuelTank_v1()
-
-
-    def push_accelerator(self, fuel_amount_in_milliliters):
-        fuel = Fuel.create_from_amount_in_milliliters(fuel_amount_in_milliliters)
-        self.engine.inject_air()
-        self.fuel_tank.use_fuel(fuel)
-        self.engine.inject_fuel(fuel)
+        return FuelTank_v1(Fuel.create_from_amount_in_liters(140))
 
     def start_engine(self):
         self.engine.start()
 
     def stop_engine(self):
         self.engine.stop()
+
+    def push_accelerator(self, fuel_amount_in_milliliters):
+        fuel = Fuel.create_from_amount_in_milliliters(fuel_amount_in_milliliters)
+        self.engine.inject_air()
+        self.fuel_tank.use_fuel(fuel)
+        self.engine.inject_fuel(fuel)

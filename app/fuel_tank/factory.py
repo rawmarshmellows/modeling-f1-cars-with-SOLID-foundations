@@ -1,5 +1,6 @@
-from .fuel_tank_v1 import FuelTank_v1
-from .fuel import Fuel
+from app.fuel_tank.fuel import Fuel
+from app.fuel_tank.fuel_tank_v1 import FuelTank_v1
+
 
 class FuelTankFactory:
     @staticmethod

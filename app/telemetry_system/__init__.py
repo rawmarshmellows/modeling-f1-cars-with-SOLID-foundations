@@ -1,2 +1,2 @@
-from .exceptions import TelemetryNotEnabledError
-from .factory import TelemetrySystemFactory
+from app.telemetry_system.exceptions import TelemetryNotEnabledError
+from app.telemetry_system.factory import TelemetrySystemFactory

@@ -1,4 +1,5 @@
-from .wheels_v1 import Wheels_v1
+from app.wheels.wheels_v1 import Wheels_v1
+
 
 class WheelsFactory:
     @staticmethod

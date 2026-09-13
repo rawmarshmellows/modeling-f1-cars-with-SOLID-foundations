@@ -4,12 +4,11 @@ class TelemetrySystem_v1:
         self.logs = []
 
     def save(self, log):
-        if self.is_enabled is False:
-            return
-        self.logs.append(log)
-    
+        if self.is_enabled:
+            self.logs.append(log)
+
     def enable(self):
         self.is_enabled = True
-    
+
     def disable(self):
         self.is_enabled = False

@@ -1,0 +1,182 @@
+{
+  "S1": {
+    "gist_id": "27378b0cf6420bc97220bd14749c64e2",
+    "url": "https://gist.github.com/rawmarshmellows/27378b0cf6420bc97220bd14749c64e2",
+    "filename": "f1_car_v1.py"
+  },
+  "S2": {
+    "gist_id": "12d737b799778e035649d5a07cbae456",
+    "url": "https://gist.github.com/rawmarshmellows/12d737b799778e035649d5a07cbae456",
+    "filename": "test_engine_needs_whole_car.py"
+  },
+  "S3": {
+    "gist_id": "2da48de5af471eb2a5556e09f8cbbc87",
+    "url": "https://gist.github.com/rawmarshmellows/2da48de5af471eb2a5556e09f8cbbc87",
+    "filename": "engine_factory.py"
+  },
+  "S4": {
+    "gist_id": "1a6d55b4afdc5d69079c93ddece10d9c",
+    "url": "https://gist.github.com/rawmarshmellows/1a6d55b4afdc5d69079c93ddece10d9c",
+    "filename": "f1_car_v2.py"
+  },
+  "S5": {
+    "gist_id": "0ae4308fd24c1f1d74ab93bf21a919a9",
+    "url": "https://gist.github.com/rawmarshmellows/0ae4308fd24c1f1d74ab93bf21a919a9",
+    "filename": "test_engine_in_isolation.py"
+  },
+  "O1": {
+    "gist_id": "d6452ab72dfbc86798140e9b63422ae8",
+    "url": "https://gist.github.com/rawmarshmellows/d6452ab72dfbc86798140e9b63422ae8",
+    "filename": "f1_car_v2_to_v3.diff"
+  },
+  "O2": {
+    "gist_id": "c437449138a6c3595ea741079cab6102",
+    "url": "https://gist.github.com/rawmarshmellows/c437449138a6c3595ea741079cab6102",
+    "filename": "f1_car_v4.py"
+  },
+  "O3": {
+    "gist_id": "e45f0f63e71e898789d8f8fe32027c69",
+    "url": "https://gist.github.com/rawmarshmellows/e45f0f63e71e898789d8f8fe32027c69",
+    "filename": "build_f1_car_v4.py"
+  },
+  "O4": {
+    "gist_id": "94fe6e1475bb1dee7919f8097d4a21d8",
+    "url": "https://gist.github.com/rawmarshmellows/94fe6e1475bb1dee7919f8097d4a21d8",
+    "filename": "one_class_many_eras.py"
+  },
+  "D1": {
+    "gist_id": "8245f0a3d0946414b4840b29bab327d7",
+    "url": "https://gist.github.com/rawmarshmellows/8245f0a3d0946414b4840b29bab327d7",
+    "filename": "engine_1980s_1_5L_turbocharged_v1.py"
+  },
+  "D2": {
+    "gist_id": "45a2651ffc92d32b5917d72c5b15db68",
+    "url": "https://gist.github.com/rawmarshmellows/45a2651ffc92d32b5917d72c5b15db68",
+    "filename": "start_turbo_car.py"
+  },
+  "D3": {
+    "gist_id": "0d53a0f6bae0af0f7f733bdb6afebdbb",
+    "url": "https://gist.github.com/rawmarshmellows/0d53a0f6bae0af0f7f733bdb6afebdbb",
+    "filename": "f1_car_v4_patched.py"
+  },
+  "D4": {
+    "gist_id": "d39a3aae6443c9efc9a530997e632d1a",
+    "url": "https://gist.github.com/rawmarshmellows/d39a3aae6443c9efc9a530997e632d1a",
+    "filename": "engine_interface.py"
+  },
+  "D5": {
+    "gist_id": "9b9e69d7088663ebdfe2524530f48a5a",
+    "url": "https://gist.github.com/rawmarshmellows/9b9e69d7088663ebdfe2524530f48a5a",
+    "filename": "engine_turbocharged_v1_to_v2.diff"
+  },
+  "D6": {
+    "gist_id": "5d5cb1e3cbf1fa0a2c2c439e702fa863",
+    "url": "https://gist.github.com/rawmarshmellows/5d5cb1e3cbf1fa0a2c2c439e702fa863",
+    "filename": "build_turbo_engine_v2.py"
+  },
+  "D7": {
+    "gist_id": "31202740638441cccc7f227f3d815b72",
+    "url": "https://gist.github.com/rawmarshmellows/31202740638441cccc7f227f3d815b72",
+    "filename": "engine_turbocharged_v2_to_v3.diff"
+  },
+  "D8": {
+    "gist_id": "bb270b86aaf963275d9187cee8147a24",
+    "url": "https://gist.github.com/rawmarshmellows/bb270b86aaf963275d9187cee8147a24",
+    "filename": "f1_car_v4_to_v5.diff"
+  },
+  "D9": {
+    "gist_id": "84089c1c69a20d70cd273bea7f095416",
+    "url": "https://gist.github.com/rawmarshmellows/84089c1c69a20d70cd273bea7f095416",
+    "filename": "drive_turbo_car.py"
+  },
+  "L1": {
+    "gist_id": "cc5ddb36b1e54344e47f67216496fcfe",
+    "url": "https://gist.github.com/rawmarshmellows/cc5ddb36b1e54344e47f67216496fcfe",
+    "filename": "f1_car_interface.py"
+  },
+  "L2": {
+    "gist_id": "41c8add7384b94f52eba433656e1518f",
+    "url": "https://gist.github.com/rawmarshmellows/41c8add7384b94f52eba433656e1518f",
+    "filename": "f1_car_with_telemetry_v1.py"
+  },
+  "L3": {
+    "gist_id": "2d9dbf974e8da134236bf16c25b0e7ab",
+    "url": "https://gist.github.com/rawmarshmellows/2d9dbf974e8da134236bf16c25b0e7ab",
+    "filename": "driver_v2.py"
+  },
+  "L4": {
+    "gist_id": "094f09993bc23781a00bfe41b34061d7",
+    "url": "https://gist.github.com/rawmarshmellows/094f09993bc23781a00bfe41b34061d7",
+    "filename": "hybrid_f1_car_v1.py"
+  },
+  "L5": {
+    "gist_id": "db99a1966d4882d9369c0ac59ef48ab8",
+    "url": "https://gist.github.com/rawmarshmellows/db99a1966d4882d9369c0ac59ef48ab8",
+    "filename": "signature_rule_new_exception.py"
+  },
+  "L6": {
+    "gist_id": "673959c3b409684bb9c0fe566764d6cb",
+    "url": "https://gist.github.com/rawmarshmellows/673959c3b409684bb9c0fe566764d6cb",
+    "filename": "properties_rule_invariant.py"
+  },
+  "L7": {
+    "gist_id": "0b15a30cf0c3c30e8b5be1746731711b",
+    "url": "https://gist.github.com/rawmarshmellows/0b15a30cf0c3c30e8b5be1746731711b",
+    "filename": "properties_rule_history.py"
+  },
+  "L8": {
+    "gist_id": "20895f4dd5e23fc089716dd265ca0979",
+    "url": "https://gist.github.com/rawmarshmellows/20895f4dd5e23fc089716dd265ca0979",
+    "filename": "methods_rule_precondition.py"
+  },
+  "L9": {
+    "gist_id": "d82d937c43648d6a631aa49b90fb899c",
+    "url": "https://gist.github.com/rawmarshmellows/d82d937c43648d6a631aa49b90fb899c",
+    "filename": "methods_rule_postcondition.py"
+  },
+  "L10": {
+    "gist_id": "314281cc10b73faf0f678536d2c14bec",
+    "url": "https://gist.github.com/rawmarshmellows/314281cc10b73faf0f678536d2c14bec",
+    "filename": "hybrid_f1_car_v2.py"
+  },
+  "L11": {
+    "gist_id": "ff29d33475ebfb427e81debe5f00921f",
+    "url": "https://gist.github.com/rawmarshmellows/ff29d33475ebfb427e81debe5f00921f",
+    "filename": "substitution_works.py"
+  },
+  "I1": {
+    "gist_id": "6e677fca5e1e44275a913d498315cb48",
+    "url": "https://gist.github.com/rawmarshmellows/6e677fca5e1e44275a913d498315cb48",
+    "filename": "f1_car_v6.py"
+  },
+  "I2": {
+    "gist_id": "eaa7e1599e98a8ccabb8784e4f349ffc",
+    "url": "https://gist.github.com/rawmarshmellows/eaa7e1599e98a8ccabb8784e4f349ffc",
+    "filename": "driver_v3.py"
+  },
+  "I3": {
+    "gist_id": "c3ccc62ef2d6c3e9f12ce0820f117829",
+    "url": "https://gist.github.com/rawmarshmellows/c3ccc62ef2d6c3e9f12ce0820f117829",
+    "filename": "segregated_interfaces.py"
+  },
+  "I4": {
+    "gist_id": "60795132f999ba53e0064c318b729f04",
+    "url": "https://gist.github.com/rawmarshmellows/60795132f999ba53e0064c318b729f04",
+    "filename": "cars_declare_interfaces.py"
+  },
+  "I5": {
+    "gist_id": "1c8025851cc1a0c167ead2464630a817",
+    "url": "https://gist.github.com/rawmarshmellows/1c8025851cc1a0c167ead2464630a817",
+    "filename": "drivers_by_role.py"
+  },
+  "I6": {
+    "gist_id": "4b2ab00ad71263b8e8cf2ab079518d04",
+    "url": "https://gist.github.com/rawmarshmellows/4b2ab00ad71263b8e8cf2ab079518d04",
+    "filename": "driver_factory.py"
+  },
+  "I7": {
+    "gist_id": "44a656c0672f5d9f47c61f10fbd7909e",
+    "url": "https://gist.github.com/rawmarshmellows/44a656c0672f5d9f47c61f10fbd7909e",
+    "filename": "heritage_demo_day.py"
+  }
+}

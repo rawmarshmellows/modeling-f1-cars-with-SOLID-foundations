@@ -1,0 +1,273 @@
+# Every code example in the article and notebook, in reading order. Each entry is one gist.
+#
+# kind = "file"     publish an app/ module verbatim
+# kind = "diff"     publish a unified diff between two app/ modules (`base` -> `source`)
+# kind = "excerpt"  publish a curated file; its classes and methods must match app/ exactly
+# kind = "script"   publish a curated file; it runs top to bottom with its section's earlier
+#                   scripts, and every `# -> value` / `# raises: Error: message` annotation is checked
+
+# ---------------------------------------------------------------- S: Single Responsibility
+
+[[gist]]
+id = "S1"
+kind = "file"
+source = "app/f1_cars/f1_car_v1.py"
+filename = "f1_car_v1.py"
+description = "SOLID F1 · S1 · F1Car_v1 builds its own parts"
+
+[[gist]]
+id = "S2"
+kind = "script"
+source = "snippets/S2_test_engine_needs_whole_car.py"
+filename = "test_engine_needs_whole_car.py"
+description = "SOLID F1 · S2 · Testing the engine means building the whole car"
+
+[[gist]]
+id = "S3"
+kind = "excerpt"
+source = "snippets/S3_engine_factory.py"
+filename = "engine_factory.py"
+description = "SOLID F1 · S3 · EngineFactory takes over construction"
+
+[[gist]]
+id = "S4"
+kind = "file"
+source = "app/f1_cars/f1_car_v2.py"
+filename = "f1_car_v2.py"
+description = "SOLID F1 · S4 · F1Car_v2 asks factories for its parts"
+
+[[gist]]
+id = "S5"
+kind = "script"
+source = "snippets/S5_test_engine_in_isolation.py"
+filename = "test_engine_in_isolation.py"
+description = "SOLID F1 · S5 · Testing the engine in isolation"
+
+# ---------------------------------------------------------------- O: Open/Closed
+
+[[gist]]
+id = "O1"
+kind = "diff"
+base = "app/f1_cars/f1_car_v2.py"
+source = "app/f1_cars/f1_car_v3.py"
+filename = "f1_car_v2_to_v3.diff"
+description = "SOLID F1 · O1 · A new engine means editing the car"
+
+[[gist]]
+id = "O2"
+kind = "file"
+source = "app/f1_cars/f1_car_v4.py"
+filename = "f1_car_v4.py"
+description = "SOLID F1 · O2 · F1Car_v4 receives its parts through the constructor"
+
+[[gist]]
+id = "O3"
+kind = "script"
+source = "snippets/O3_build_f1_car_v4.py"
+filename = "build_f1_car_v4.py"
+description = "SOLID F1 · O3 · Assembling the 1954 car"
+
+[[gist]]
+id = "O4"
+kind = "script"
+source = "snippets/O4_one_class_many_eras.py"
+filename = "one_class_many_eras.py"
+description = "SOLID F1 · O4 · Three eras, one unchanged class"
+
+# ---------------------------------------------------------------- D: Dependency Inversion
+
+[[gist]]
+id = "D1"
+kind = "file"
+source = "app/engine/engine_1980s_1_5L_turbocharged_v1.py"
+filename = "engine_1980s_1_5L_turbocharged_v1.py"
+description = "SOLID F1 · D1 · The turbo engine starts differently"
+
+[[gist]]
+id = "D2"
+kind = "script"
+source = "snippets/D2_start_turbo_car.py"
+filename = "start_turbo_car.py"
+description = "SOLID F1 · D2 · The car won't start"
+
+[[gist]]
+id = "D3"
+kind = "file"
+source = "app/f1_cars/f1_car_v4_patched.py"
+filename = "f1_car_v4_patched.py"
+description = "SOLID F1 · D3 · Patching the car with a type switch"
+
+[[gist]]
+id = "D4"
+kind = "file"
+source = "app/f1_cars/engine_interface.py"
+filename = "engine_interface.py"
+description = "SOLID F1 · D4 · EngineInterface, the car team's spec for every engine"
+
+[[gist]]
+id = "D5"
+kind = "diff"
+base = "app/engine/engine_1980s_1_5L_turbocharged_v1.py"
+source = "app/engine/engine_1980s_1_5L_turbocharged_v2.py"
+filename = "engine_turbocharged_v1_to_v2.diff"
+description = "SOLID F1 · D5 · The turbo engine signs the contract"
+
+[[gist]]
+id = "D6"
+kind = "script"
+source = "snippets/D6_build_turbo_engine_v2.py"
+filename = "build_turbo_engine_v2.py"
+description = "SOLID F1 · D6 · Breaking the contract fails in the factory, not on track"
+
+[[gist]]
+id = "D7"
+kind = "diff"
+base = "app/engine/engine_1980s_1_5L_turbocharged_v2.py"
+source = "app/engine/engine_1980s_1_5L_turbocharged_v3.py"
+filename = "engine_turbocharged_v2_to_v3.diff"
+description = "SOLID F1 · D7 · The turbo engine honours the contract"
+
+[[gist]]
+id = "D8"
+kind = "diff"
+base = "app/f1_cars/f1_car_v4.py"
+source = "app/f1_cars/f1_car_v5.py"
+filename = "f1_car_v4_to_v5.diff"
+description = "SOLID F1 · D8 · The car names the abstraction it depends on"
+
+[[gist]]
+id = "D9"
+kind = "script"
+source = "snippets/D9_drive_turbo_car.py"
+filename = "drive_turbo_car.py"
+description = "SOLID F1 · D9 · Same driver, a car that never learned about turbos"
+
+# ---------------------------------------------------------------- L: Liskov Substitution
+
+[[gist]]
+id = "L1"
+kind = "file"
+source = "app/f1_cars/interface.py"
+filename = "f1_car_interface.py"
+description = "SOLID F1 · L1 · F1CarInterface: signatures plus promises"
+
+[[gist]]
+id = "L2"
+kind = "file"
+source = "app/f1_cars/f1_car_with_telemetry_v1.py"
+filename = "f1_car_with_telemetry_v1.py"
+description = "SOLID F1 · L2 · The 1980s telemetry car keeps every promise"
+
+[[gist]]
+id = "L3"
+kind = "file"
+source = "app/drivers/driver_v2.py"
+filename = "driver_v2.py"
+description = "SOLID F1 · L3 · Driver_v2, written against the interface"
+
+[[gist]]
+id = "L4"
+kind = "file"
+source = "app/f1_cars/hybrid_f1_car_v1.py"
+filename = "hybrid_f1_car_v1.py"
+description = "SOLID F1 · L4 · The hybrid, ported in a hurry"
+
+[[gist]]
+id = "L5"
+kind = "script"
+source = "snippets/L5_new_exception.py"
+filename = "signature_rule_new_exception.py"
+description = "SOLID F1 · L5 · Signature rule: an exception the driver has never seen"
+
+[[gist]]
+id = "L6"
+kind = "script"
+source = "snippets/L6_broken_invariant.py"
+filename = "properties_rule_invariant.py"
+description = "SOLID F1 · L6 · Properties rule: the telemetry invariant is gone"
+
+[[gist]]
+id = "L7"
+kind = "script"
+source = "snippets/L7_broken_history.py"
+filename = "properties_rule_history.py"
+description = "SOLID F1 · L7 · Properties rule: a recorded snapshot disappears"
+
+[[gist]]
+id = "L8"
+kind = "script"
+source = "snippets/L8_stronger_precondition.py"
+filename = "methods_rule_precondition.py"
+description = "SOLID F1 · L8 · Methods rule: a stronger precondition"
+
+[[gist]]
+id = "L9"
+kind = "script"
+source = "snippets/L9_weaker_postcondition.py"
+filename = "methods_rule_postcondition.py"
+description = "SOLID F1 · L9 · Methods rule: a weaker postcondition"
+
+[[gist]]
+id = "L10"
+kind = "file"
+source = "app/f1_cars/hybrid_f1_car_v2.py"
+filename = "hybrid_f1_car_v2.py"
+description = "SOLID F1 · L10 · The hybrid that keeps the contract"
+
+[[gist]]
+id = "L11"
+kind = "script"
+source = "snippets/L11_substitution_works.py"
+filename = "substitution_works.py"
+description = "SOLID F1 · L11 · One unchanged driver, both cars"
+
+# ---------------------------------------------------------------- I: Interface Segregation
+
+[[gist]]
+id = "I1"
+kind = "file"
+source = "app/f1_cars/f1_car_v6.py"
+filename = "f1_car_v6.py"
+description = "SOLID F1 · I1 · A 1950s car forced to fake telemetry"
+
+[[gist]]
+id = "I2"
+kind = "file"
+source = "app/drivers/driver_v3.py"
+filename = "driver_v3.py"
+description = "SOLID F1 · I2 · One driver who has to know every car"
+
+[[gist]]
+id = "I3"
+kind = "file"
+source = "app/f1_cars/segregated_interfaces.py"
+filename = "segregated_interfaces.py"
+description = "SOLID F1 · I3 · Small interfaces, one capability each"
+
+[[gist]]
+id = "I4"
+kind = "excerpt"
+source = "snippets/I4_cars_declare_interfaces.py"
+filename = "cars_declare_interfaces.py"
+description = "SOLID F1 · I4 · Each car signs up for what it can do"
+
+[[gist]]
+id = "I5"
+kind = "file"
+source = "app/drivers/drivers_by_role.py"
+filename = "drivers_by_role.py"
+description = "SOLID F1 · I5 · A driver for each set of capabilities"
+
+[[gist]]
+id = "I6"
+kind = "file"
+source = "app/drivers/factory.py"
+filename = "driver_factory.py"
+description = "SOLID F1 · I6 · DriverFactory picks the driver from the car's interfaces"
+
+[[gist]]
+id = "I7"
+kind = "script"
+source = "snippets/I7_heritage_demo_day.py"
+filename = "heritage_demo_day.py"
+description = "SOLID F1 · I7 · Heritage demo day: three eras, three drivers"

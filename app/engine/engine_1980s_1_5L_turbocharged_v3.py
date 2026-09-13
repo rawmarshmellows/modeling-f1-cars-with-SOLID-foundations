@@ -1,9 +1,10 @@
-from .interface import EngineInterface
+from app.f1_cars.engine_interface import EngineInterface
+
 
 class Engine1980s_1_5L_TurboCharged_v3(EngineInterface):
     def __init__(self):
         self.has_started = False
-    
+
     def start(self):
         self.start_with_turbocharger()
 
@@ -15,9 +16,8 @@ class Engine1980s_1_5L_TurboCharged_v3(EngineInterface):
         self.has_started = False
         print("Engine has stopped")
 
-    def inject_fuel(self, fuel):
-        print(f"Inject {fuel.amount_in_milliliters}mL of fuel into engine with better efficiency")
-
     def inject_air(self):
-        print("Inject air into engine with better efficiency")
+        print("Inject air into engine through turbocharger")
 
+    def inject_fuel(self, fuel):
+        print(f"Inject {fuel.amount_in_milliliters}mL of fuel into engine")
