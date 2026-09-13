@@ -59,20 +59,22 @@ def average_fuel_used_per_push(telemetry_logs):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    # Driving Change: SOLID Principles in Python, Told Through an F1 Car
+    # 5 principles to stop your code from spinning out every time the rules change
 
-    Formula One rewrites its rulebook almost every season, and a car that can't absorb the
-    changes doesn't win. Software has the same problem with changing requirements. **SOLID**
-    is five principles for writing code that survives them.
+    Formula One can't leave its rulebook alone, and neither can your product manager.
 
-    This notebook is the companion to the article. Each principle gets one moment from F1
-    history, then the code: what broke, why, and the refactor that fixed it. We go in the
-    order the code needs them, **S → O → D → L → I**, because Dependency Inversion introduces
-    the interfaces that Liskov and Interface Segregation build on.
+    **What if your code could shrug off rule changes the way a good F1 car does?**
+
+    That's what SOLID is for. This notebook follows the article section by section, dragging a
+    Python F1 car through seven decades of regulation changes. We take the corners in the order
+    the code needs them, **S → O → D → L → I** (yes, SODLI), because Dependency Inversion hands
+    out the interfaces that Liskov and Interface Segregation rely on.
 
     - Read-only code blocks are the exact snippets from the article (and its gists).
-    - Code cells are live. Edit them, break a contract, and see what happens.
-    - Deliberate errors show up as red callouts, so the rest of the notebook keeps running.
+    - Code cells are live, so edit them, break a contract, and see what happens!
+    - Deliberate crashes show up as red callouts, so the rest of the notebook keeps running.
+
+    Lights out, and away we go!
     """)
     return
 
@@ -81,13 +83,13 @@ def _():
 def _():
     mo.md(r"""
     ---
-    ## S: The Single Responsibility Principle
+    ## S: Single Responsibility, or why your car shouldn't build its own engine
 
     > A class should have one, and only one, reason to change.
 
-    **1951.** Alfa Romeo's 159 took Fangio to the title with a 1.5-litre supercharged engine
-    that needed constant work between races. Every reworked engine had to be tested before it
-    went back in the car. Here's our first car. Look at what it's responsible for:
+    **1951.** Alfa Romeo's 159 took Fangio to the title on a 1.5-litre supercharged engine that
+    was fast, thirsty, and more or less permanently in pieces between races. Every rebuilt engine
+    had to be tested before it went back in the car. **Here's our first car. Count its jobs:**
     """)
     return
 
@@ -175,15 +177,17 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    **Takeaway:** the car uses its parts; it doesn't build them.
+    In this section, we split building from driving: the car drives, the factory builds, and when
+    an engine comes out wrong, you know exactly whose door to knock on.
 
     ---
-    ## O: The Open/Closed Principle
+    ## O: Open/Closed, or how to swap engines without opening up the car
 
     > Software entities should be open for extension, but closed for modification.
 
-    **1954.** The regulations moved to a 2.5-litre formula, and the teams answered with naturally
-    aspirated engines. The new engine was built and tested in isolation. Then it had to go into the car:
+    **1954.** The regulations move to a 2.5-litre formula, and the teams go naturally aspirated.
+    Thanks to our engine shop, the new engine is built and tested without a car. Lovely!
+    **Now let's put it in the car:**
     """)
     return
 
@@ -315,15 +319,17 @@ def _(chassis_picker, engine_picker):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    **Takeaway:** `F1Car_v4` is closed for modification and open for extension.
+    In this section, we moved the choice of parts out of the car, so a new part no longer means a
+    new car. Well... *almost* any part. Cue the ominous music.
 
     ---
-    ## D: The Dependency Inversion Principle
+    ## D: Dependency Inversion, or surviving an engine that starts differently
 
     > High-level modules should not depend on low-level modules. Both should depend on abstractions.
 
-    **1986.** Every car on the grid runs a 1.5-litre turbo, and our supplier's new engine has one
-    small difference nobody mentioned: it starts with `start_with_turbocharger()`.
+    **1986.** Every car on the grid runs a 1.5-litre turbo, and our supplier's shiny new one has
+    a tiny change that absolutely nobody mentioned in the handover email: you start it with
+    `start_with_turbocharger()`.
     """)
     return
 
@@ -444,9 +450,9 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    **Takeaway:** the car names `EngineInterface` as what it needs, and every engine that goes in
-    the car implements it. The ABC refuses an engine that signs but doesn't deliver; a type checker
-    rejects one that never signed.
+    In this section, we flipped the dependency so the car and the engines both depend on a
+    contract. The ABC turns away an engine that signs but doesn't deliver, and a type checker
+    rejects one that never signed at all.
 
     /// admonition | ABC or `typing.Protocol`?
     A `Protocol` describes the same contract structurally, with no subclassing, and a type
@@ -455,12 +461,14 @@ def _():
     ///
 
     ---
-    ## L: The Liskov Substitution Principle
+    ## L: Liskov Substitution, or how a hybrid quietly broke everyone's code
 
     > If S is a subtype of T, then objects of type T may be replaced with objects of type S
     > without altering any of the desirable properties of the program.
 
-    Barbara Liskov and Jeannette Wing split that into three rules:
+    In plain English: if your code works with a class, it should keep working when you hand it a
+    subclass. No surprises, and no "well, *technically* it's still a car". Liskov and Wing break
+    that down into three rules:
 
     1. **Signature rule:** implement every method with compatible types, and raise no new exceptions.
     2. **Properties rule:** keep the parent's invariants and history.
@@ -685,16 +693,18 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    **Takeaway:** tools can check that a contract's methods exist and their signatures line up.
-    Everything else lives in docstrings and tests, and a subclass has to honour those too.
+    In this section, the rushed hybrid ran fine on its own; it was everyone relying on its contract
+    who ended up in the gravel. Tools can check that methods exist and signatures line up, but
+    everything else lives in docstrings and tests, and a subclass has to honour those too.
 
     ---
-    ## I: The Interface Segregation Principle
+    ## I: Interface Segregation, or one driver and three generations of car
 
     > Clients should not be forced to depend on methods they do not use.
 
-    **Heritage demo day.** One driver, three generations of car: a 1950s car, the 1980s
-    telemetry car and the 2014 hybrid. A 1950s car can't honestly implement `F1CarInterface`:
+    **Heritage demo day.** One driver, three generations of car, one very long afternoon: a 1950s
+    car, the 1980s telemetry car and the 2014 hybrid. A 1950s car can't implement `F1CarInterface`
+    with a straight face:
     """)
     return
 
@@ -826,12 +836,14 @@ def _(car_picker):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    **Takeaway:** a new kind of car implements the interfaces it needs. A genuinely new
-    *combination* of capabilities still needs a new driver and one branch in `DriverFactory`,
-    a small edit in one place, against abstractions.
+    In this section, we split one bloated interface into small ones, so every car keeps its promises
+    honestly. The trade-off: a genuinely new *combination* of capabilities still needs a new driver
+    and one branch in `DriverFactory`, but that's a small edit in one place, against abstractions.
 
     ---
-    ## Wrap-up: the principles hold each other up
+    ## Conclusion
+
+    Thanks for playing along, and hopefully, SOLID has clicked! Each fix made the next one possible:
 
     - **Single Responsibility** took construction out of the car, which let us hand the car its parts.
     - **Open/Closed** let the car take any part without being edited, but "any part" was an unchecked assumption.
@@ -839,7 +851,8 @@ def _():
     - **Liskov Substitution** made the contract mean something: subtypes keep the promises, not just the signatures.
     - **Interface Segregation** kept contracts small enough for every car to keep honestly.
 
-    F1 teams don't win by predicting next season's rules. They win by building cars that can absorb them.
+    F1 teams don't win by predicting next season's rules; they win by building cars that can take
+    whatever the rulebook throws at them. Now go break a contract and see who ends up in the barriers!
     """)
     return
 

@@ -1,13 +1,13 @@
 # Modeling F1 cars with SOLID foundations
 
 SOLID principles in Python, told through seven decades of Formula One regulation changes.
-This is the companion repo for the article **Driving Change: SOLID Principles in Python, Told Through an F1 Car**.
+This is the companion repo for the article **5 principles to stop your code from spinning out every time the rules change**.
 
 | Principle             | F1 moment                          | What breaks, and what fixes it                                     |
 |-----------------------|------------------------------------|--------------------------------------------------------------------|
-| Single Responsibility | 1951, Alfa Romeo 159               | A car that builds its own engine can't have the engine tested alone |
+| Single Responsibility | 1951, Alfa Romeo 159               | Testing the car's engine means building the whole car, until a factory builds it |
 | Open/Closed           | 1954, 2.5L engine rules            | Swapping the engine means editing the car, until parts are injected |
-| Dependency Inversion  | Mid-1980s turbo era                | An engine that starts differently crashes on the grid, until both sides depend on `EngineInterface` |
+| Dependency Inversion  | 1986, the all-turbo grid           | An engine that starts differently crashes on the grid, until both sides depend on `EngineInterface` |
 | Liskov Substitution   | 2014 hybrid era                    | A hurried hybrid subclass breaks every rule, until it keeps the parent's promises |
 | Interface Segregation | Heritage demo day                  | One fat interface forces fake methods, until it's split per capability |
 
