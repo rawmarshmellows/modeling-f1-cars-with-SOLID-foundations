@@ -1,0 +1,17 @@
+[project]
+name = "surviving-pat-from-product-with-solid"
+version = "1.0.0"
+description = "SOLID principles in Python, told through a product manager who keeps changing the requirements."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["marimo>=0.24"]
+
+[dependency-groups]
+dev = ["mypy>=1.11", "pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

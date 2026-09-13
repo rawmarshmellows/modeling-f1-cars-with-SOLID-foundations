@@ -1,0 +1,2 @@
+class NotEnoughCreditsError(Exception):
+    pass

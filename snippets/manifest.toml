@@ -1,0 +1,273 @@
+# Every code example in the article and notebook, in reading order. Each entry is one gist.
+#
+# kind = "file"     publish a notifications/ module verbatim
+# kind = "diff"     publish a unified diff between two notifications/ modules (`base` -> `source`)
+# kind = "excerpt"  publish a curated file; its classes and methods must match notifications/ exactly
+# kind = "script"   publish a curated file; it runs top to bottom with its section's earlier
+#                   scripts, and every `# -> value` / `# raises: Error: message` annotation is checked
+
+# ---------------------------------------------------------------- S: Single Responsibility
+
+[[gist]]
+id = "S1"
+kind = "file"
+source = "notifications/notifiers/notifier_v1.py"
+filename = "notifier_v1.py"
+description = "SOLID vs Pat · S1 · Notifier_v1 builds its own channel"
+
+[[gist]]
+id = "S2"
+kind = "script"
+source = "snippets/S2_test_channel_needs_whole_notifier.py"
+filename = "test_channel_needs_whole_notifier.py"
+description = "SOLID vs Pat · S2 · Testing the email channel means building the whole notifier"
+
+[[gist]]
+id = "S3"
+kind = "excerpt"
+source = "snippets/S3_channel_factory.py"
+filename = "channel_factory.py"
+description = "SOLID vs Pat · S3 · ChannelFactory takes over construction"
+
+[[gist]]
+id = "S4"
+kind = "file"
+source = "notifications/notifiers/notifier_v2.py"
+filename = "notifier_v2.py"
+description = "SOLID vs Pat · S4 · Notifier_v2 asks factories for its parts"
+
+[[gist]]
+id = "S5"
+kind = "script"
+source = "snippets/S5_test_channel_in_isolation.py"
+filename = "test_channel_in_isolation.py"
+description = "SOLID vs Pat · S5 · Testing the channel on its own"
+
+# ---------------------------------------------------------------- O: Open/Closed
+
+[[gist]]
+id = "O1"
+kind = "diff"
+base = "notifications/notifiers/notifier_v2.py"
+source = "notifications/notifiers/notifier_v3.py"
+filename = "notifier_v2_to_v3.diff"
+description = "SOLID vs Pat · O1 · Pivoting to SMS means editing the notifier"
+
+[[gist]]
+id = "O2"
+kind = "file"
+source = "notifications/notifiers/notifier_v4.py"
+filename = "notifier_v4.py"
+description = "SOLID vs Pat · O2 · Notifier_v4 receives its parts through the constructor"
+
+[[gist]]
+id = "O3"
+kind = "script"
+source = "snippets/O3_build_sms_notifier.py"
+filename = "build_sms_notifier.py"
+description = "SOLID vs Pat · O3 · Assembling the SMS notifier"
+
+[[gist]]
+id = "O4"
+kind = "script"
+source = "snippets/O4_every_pivot_zero_edits.py"
+filename = "every_pivot_zero_edits.py"
+description = "SOLID vs Pat · O4 · Three pivots, one unchanged class"
+
+# ---------------------------------------------------------------- D: Dependency Inversion
+
+[[gist]]
+id = "D1"
+kind = "file"
+source = "notifications/channels/textblaster_sms_channel_v1.py"
+filename = "textblaster_sms_channel_v1.py"
+description = "SOLID vs Pat · D1 · TextBlaster's SDK opens a socket instead of connecting"
+
+[[gist]]
+id = "D2"
+kind = "script"
+source = "snippets/D2_connect_textblaster_notifier.py"
+filename = "connect_textblaster_notifier.py"
+description = "SOLID vs Pat · D2 · Monday morning, nothing connects"
+
+[[gist]]
+id = "D3"
+kind = "file"
+source = "notifications/notifiers/notifier_v4_patched.py"
+filename = "notifier_v4_patched.py"
+description = "SOLID vs Pat · D3 · Patching the notifier with a type switch"
+
+[[gist]]
+id = "D4"
+kind = "file"
+source = "notifications/notifiers/channel_interface.py"
+filename = "channel_interface.py"
+description = "SOLID vs Pat · D4 · ChannelInterface, the notifier team's spec for every channel"
+
+[[gist]]
+id = "D5"
+kind = "diff"
+base = "notifications/channels/textblaster_sms_channel_v1.py"
+source = "notifications/channels/textblaster_sms_channel_v2.py"
+filename = "textblaster_sms_channel_v1_to_v2.diff"
+description = "SOLID vs Pat · D5 · TextBlaster signs the contract"
+
+[[gist]]
+id = "D6"
+kind = "script"
+source = "snippets/D6_build_textblaster_channel_v2.py"
+filename = "build_textblaster_channel_v2.py"
+description = "SOLID vs Pat · D6 · Breaking the contract fails in the factory, not in production"
+
+[[gist]]
+id = "D7"
+kind = "diff"
+base = "notifications/channels/textblaster_sms_channel_v2.py"
+source = "notifications/channels/textblaster_sms_channel_v3.py"
+filename = "textblaster_sms_channel_v2_to_v3.diff"
+description = "SOLID vs Pat · D7 · TextBlaster honours the contract"
+
+[[gist]]
+id = "D8"
+kind = "diff"
+base = "notifications/notifiers/notifier_v4.py"
+source = "notifications/notifiers/notifier_v5.py"
+filename = "notifier_v4_to_v5.diff"
+description = "SOLID vs Pat · D8 · The notifier names the abstraction it depends on"
+
+[[gist]]
+id = "D9"
+kind = "script"
+source = "snippets/D9_connect_textblaster_notifier_again.py"
+filename = "connect_textblaster_notifier_again.py"
+description = "SOLID vs Pat · D9 · Same runner, a notifier that's never heard of TextBlaster"
+
+# ---------------------------------------------------------------- L: Liskov Substitution
+
+[[gist]]
+id = "L1"
+kind = "file"
+source = "notifications/notifiers/notifier_interface.py"
+filename = "notifier_interface.py"
+description = "SOLID vs Pat · L1 · NotifierInterface: signatures plus promises"
+
+[[gist]]
+id = "L2"
+kind = "file"
+source = "notifications/notifiers/audited_notifier_v1.py"
+filename = "audited_notifier_v1.py"
+description = "SOLID vs Pat · L2 · The audited notifier keeps every promise"
+
+[[gist]]
+id = "L3"
+kind = "file"
+source = "notifications/campaigns/campaign_runner_v2.py"
+filename = "campaign_runner_v2.py"
+description = "SOLID vs Pat · L3 · CampaignRunner_v2, written against the interface"
+
+[[gist]]
+id = "L4"
+kind = "file"
+source = "notifications/notifiers/ai_notifier_v1.py"
+filename = "ai_notifier_v1.py"
+description = "SOLID vs Pat · L4 · AI-powered notifications, shipped by Friday"
+
+[[gist]]
+id = "L5"
+kind = "script"
+source = "snippets/L5_new_exception.py"
+filename = "signature_rule_new_exception.py"
+description = "SOLID vs Pat · L5 · Signature rule: an exception the runner has never seen"
+
+[[gist]]
+id = "L6"
+kind = "script"
+source = "snippets/L6_broken_invariant.py"
+filename = "properties_rule_invariant.py"
+description = "SOLID vs Pat · L6 · Properties rule: connected with the audit log off"
+
+[[gist]]
+id = "L7"
+kind = "script"
+source = "snippets/L7_broken_history.py"
+filename = "properties_rule_history.py"
+description = "SOLID vs Pat · L7 · Properties rule: an audit entry disappears"
+
+[[gist]]
+id = "L8"
+kind = "script"
+source = "snippets/L8_stronger_precondition.py"
+filename = "methods_rule_precondition.py"
+description = "SOLID vs Pat · L8 · Methods rule: a stronger precondition"
+
+[[gist]]
+id = "L9"
+kind = "script"
+source = "snippets/L9_weaker_postcondition.py"
+filename = "methods_rule_postcondition.py"
+description = "SOLID vs Pat · L9 · Methods rule: a weaker postcondition"
+
+[[gist]]
+id = "L10"
+kind = "file"
+source = "notifications/notifiers/ai_notifier_v2.py"
+filename = "ai_notifier_v2.py"
+description = "SOLID vs Pat · L10 · The AI notifier that keeps the contract"
+
+[[gist]]
+id = "L11"
+kind = "script"
+source = "snippets/L11_substitution_works.py"
+filename = "substitution_works.py"
+description = "SOLID vs Pat · L11 · One unchanged runner, both notifiers"
+
+# ---------------------------------------------------------------- I: Interface Segregation
+
+[[gist]]
+id = "I1"
+kind = "file"
+source = "notifications/notifiers/notifier_v6.py"
+filename = "notifier_v6.py"
+description = "SOLID vs Pat · I1 · The legacy plan forced to fake an audit log"
+
+[[gist]]
+id = "I2"
+kind = "file"
+source = "notifications/campaigns/campaign_runner_v3.py"
+filename = "campaign_runner_v3.py"
+description = "SOLID vs Pat · I2 · One runner that has to know every plan"
+
+[[gist]]
+id = "I3"
+kind = "file"
+source = "notifications/notifiers/segregated_interfaces.py"
+filename = "segregated_interfaces.py"
+description = "SOLID vs Pat · I3 · Small interfaces, one capability each"
+
+[[gist]]
+id = "I4"
+kind = "excerpt"
+source = "snippets/I4_plans_declare_interfaces.py"
+filename = "plans_declare_interfaces.py"
+description = "SOLID vs Pat · I4 · Each plan signs up for what it can do"
+
+[[gist]]
+id = "I5"
+kind = "file"
+source = "notifications/campaigns/campaign_runners_by_role.py"
+filename = "campaign_runners_by_role.py"
+description = "SOLID vs Pat · I5 · A campaign runner for each set of capabilities"
+
+[[gist]]
+id = "I6"
+kind = "file"
+source = "notifications/campaigns/factory.py"
+filename = "campaign_runner_factory.py"
+description = "SOLID vs Pat · I6 · CampaignRunnerFactory picks the runner from the notifier's interfaces"
+
+[[gist]]
+id = "I7"
+kind = "script"
+source = "snippets/I7_enterprise_demo.py"
+filename = "enterprise_demo.py"
+description = "SOLID vs Pat · I7 · The enterprise demo: three plans, three runners"

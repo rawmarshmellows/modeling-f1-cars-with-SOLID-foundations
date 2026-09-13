@@ -1,2 +1,0 @@
-class TelemetryNotEnabledError(Exception):
-    pass
