@@ -8,35 +8,49 @@
 import marimo
 
 __generated_with = "0.24.2"
-app = marimo.App(width="medium", app_title="Driving Change: SOLID F1")
+app = marimo.App(width="medium", app_title="SOLID vs. Pat from Product")
 
 with app.setup:
     import marimo as mo
 
-    from app.chassis import ChassisFactory
-    from app.drivers import DriverFactory
-    from app.drivers.driver_v1 import Driver_v1
-    from app.drivers.driver_v2 import Driver_v2
-    from app.engine import EngineFactory
-    from app.f1_cars.f1_car_v1 import F1Car_v1
-    from app.f1_cars.f1_car_v4 import F1Car_v4
-    from app.f1_cars.f1_car_v5 import F1Car_v5
-    from app.f1_cars.f1_car_v7 import F1Car_v7
-    from app.f1_cars.f1_car_with_telemetry_v1 import F1CarWithTelemetry_v1
-    from app.f1_cars.f1_car_with_telemetry_v2 import F1CarWithTelemetry_v2
-    from app.f1_cars.hybrid_f1_car_v1 import HybridF1Car_v1
-    from app.f1_cars.hybrid_f1_car_v2 import HybridF1Car_v2
-    from app.f1_cars.hybrid_f1_car_v3 import HybridF1Car_v3
-    from app.fuel_tank import FuelTankFactory
-    from app.garage import build_1950s_car, build_hybrid_car, build_telemetry_car
-    from app.wheels import WheelsFactory
+    from notifications.billing import CreditBalanceFactory
+    from notifications.billing.pricing import segments_of
+    from notifications.campaigns import CampaignRunnerFactory
+    from notifications.campaigns.campaign_runner_v1 import CampaignRunner_v1
+    from notifications.campaigns.campaign_runner_v2 import CampaignRunner_v2
+    from notifications.channels import ChannelFactory
+    from notifications.notifiers.ai_notifier_v1 import AiNotifier_v1
+    from notifications.notifiers.ai_notifier_v2 import AiNotifier_v2
+    from notifications.notifiers.ai_notifier_v3 import AiNotifier_v3
+    from notifications.notifiers.audited_notifier_v1 import AuditedNotifier_v1
+    from notifications.notifiers.audited_notifier_v2 import AuditedNotifier_v2
+    from notifications.notifiers.notifier_v1 import Notifier_v1
+    from notifications.notifiers.notifier_v4 import Notifier_v4
+    from notifications.notifiers.notifier_v5 import Notifier_v5
+    from notifications.notifiers.notifier_v7 import Notifier_v7
+    from notifications.recipients import RecipientListFactory
+    from notifications.templates import TemplateFactory
+    from notifications.wiring import build_ai_notifier, build_audited_notifier, build_legacy_notifier
     from snippets.catalog import snippet_markdown
+
+    BIG_SALE_PROMO = "Everything must go! " * 10  # 200 characters, two SMS segments
 
 
 @app.function
 def show_code(snippet_id):
     """Show a snippet exactly as it appears in the article and in its gist."""
     return mo.md(snippet_markdown(snippet_id))
+
+
+@app.function
+def pat(name):
+    """One of Pat's Slack messages."""
+    return mo.image(src=str(mo.notebook_dir() / "images" / "slack" / f"{name}.png"), width=640, rounded=True)
+
+
+@app.function
+def meme(name, alt):
+    return mo.image(src=str(mo.notebook_dir() / "images" / "memes" / f"{name}.png"), alt=alt, width=460, rounded=True)
 
 
 @app.function
@@ -50,58 +64,64 @@ def outcome(action):
 
 
 @app.function
-def average_fuel_used_per_push(telemetry_logs):
-    """Pit wall code, written against the promise in F1CarInterface.get_current_telemetry."""
-    fuel = [log["fuel_in_milliliters"] for log in telemetry_logs]
-    return (fuel[0] - fuel[-1]) / (len(fuel) - 1)
+def average_credits_per_send(audit_log):
+    """Compliance's billing report, written against the promise in NotifierInterface.get_current_audit_entry."""
+    credits = [entry["credits_remaining"] for entry in audit_log]
+    return (credits[0] - credits[-1]) / (len(credits) - 1)
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    # 5 principles to stop your code from spinning out every time the rules change
+    # 5 principles to survive a product manager who keeps changing the requirements
 
-    Formula One can't leave its rulebook alone, and neither can your product manager.
+    Meet Pat. Pat is from Product, Pat is lovely, and Pat has never once asked for a change that turned out
+    to be small.
+    """)
+    return
 
-    **What if your code could shrug off rule changes the way a good F1 car does?**
 
-    That's what SOLID is for. This notebook follows the article section by section, dragging a
-    Python F1 car through seven decades of regulation changes. We take the corners in the order
-    the code needs them, **S → O → D → L → I** (yes, SODLI), because Dependency Inversion hands
-    out the interfaces that Liskov and Interface Segregation rely on.
+@app.cell(hide_code=True)
+def _():
+    mo.vstack([pat("intro"), meme("intro_iceberg", "Iceberg: it's a small change")])
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    **What if the next "small change" really was small?**
+
+    That's what SOLID is for. This notebook follows the article section by section, building a notifications
+    service that survives a year of Pat's requirements. We take the principles in the order the code needs
+    them, **S → O → D → L → I** (yes, SODLI), because Dependency Inversion hands out the interfaces that Liskov
+    and Interface Segregation rely on.
 
     - Read-only code blocks are the exact snippets from the article (and its gists).
-    - Code cells are live, so edit them, break a contract, and see what happens!
+    - Code cells are live, so edit them, break a contract, and see who gets paged!
     - Deliberate crashes show up as red callouts, so the rest of the notebook keeps running.
 
-    Lights out, and away we go!
+    Let's open Slack.
+
+    ---
+    ## S: Single Responsibility, or why your notifier shouldn't build its own email channel
+
+    > A class should have one, and only one, reason to change.
     """)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    pat("s")
     return
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ---
-    ## S: Single Responsibility, or why your car shouldn't build its own engine
-
-    > A class should have one, and only one, reason to change.
-
-    **1951.** Alfa Romeo's 159 took Fangio to the title on a 1.5-litre supercharged engine that
-    was fast, thirsty, and more or less permanently in pieces between races. Every rebuilt engine
-    had to be tested before it went back in the car. **Here's our first car. Count its jobs:**
+    **Here's our first notifier. Count its jobs:**
     """)
-    return
-
-
-@app.cell(hide_code=True)
-def _():
-    mo.image(
-        src=str(mo.notebook_dir() / "images" / "Alfa-Romeo-159-(1951).jpg"),
-        width=480,
-        rounded=True,
-        caption="Alfa Romeo 159, 1951",
-    )
     return
 
 
@@ -114,29 +134,29 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    `F1Car_v1` *drives*, and it also *builds* every part it drives with. The knowledge of which
-    engine the team runs lives inside the car, so testing that engine means building everything:
+    Two! It *sends*, and it *builds* every part it sends with, so the knowledge of which channel the team
+    uses lives inside the notifier. **Let's test the email channel:**
     """)
     return
 
 
 @app.cell
 def _():
-    def _test_engine_starts():
-        f1_car = F1Car_v1()  # only the car knows which engine to build, so we build the whole car
-        f1_car.start_engine()
-        assert f1_car.engine.has_started
+    def _test_email_channel_connects():
+        notifier = Notifier_v1()  # only the notifier knows which channel to build, so we build all of it
+        notifier.connect()
+        assert notifier.channel.is_connected
 
 
-    _test_engine_starts()
+    _test_email_channel_connects()
     return
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Construction and driving change for different reasons, so move construction into a
-    factory whose only job is building engines (plus one each for chassis, wheels and fuel tank):
+    **Let's hire a channel shop, a class whose only job is building channels**, and let the notifier ask
+    factories for its parts:
     """)
     return
 
@@ -153,41 +173,49 @@ def _():
     return
 
 
+@app.cell
+def _():
+    def _test_email_channel_connects():
+        channel = ChannelFactory.create_email_channel_v1()  # built exactly the way the notifier builds it
+        channel.connect()
+        assert channel.is_connected
+
+
+    _test_email_channel_connects()
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    meme("s_drake", "Reject emailing the whole company, approve testing EmailChannel_v1 on its own")
+    return
+
+
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    The factory is now the one place that knows how the team builds its engines, so a test can
-    use it with no car in sight:
+    In this section, we split building from sending: the notifier sends, the factory builds. Fixed by EOD!
+    In the next section, Pat has BIG NEWS.
+
+    ---
+    ## O: Open/Closed, or how to pivot without opening up the notifier
+
+    > Software entities should be open for extension, but closed for modification.
     """)
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
-    def _test_engine_starts():
-        engine = EngineFactory.create_engine_1950s_1_5L_supercharged_v1()  # built exactly as the car builds it
-        engine.start()
-        assert engine.has_started
-
-
-    _test_engine_starts()
+    pat("o")
     return
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    In this section, we split building from driving: the car drives, the factory builds, and when
-    an engine comes out wrong, you know exactly whose door to knock on.
-
-    ---
-    ## O: Open/Closed, or how to swap engines without opening up the car
-
-    > Software entities should be open for extension, but closed for modification.
-
-    **1954.** The regulations move to a 2.5-litre formula, and the teams go naturally aspirated.
-    Thanks to our engine shop, the new engine is built and tested without a car. Lovely!
-    **Now let's put it in the car:**
+    "That's a one-line change right??" Pat is technically correct, the most dangerous kind of correct.
+    **Let's pivot to SMS:**
     """)
     return
 
@@ -201,8 +229,8 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    One line, but it's inside the car, so every new engine means a new car class that has to
-    be re-tested as a whole. Instead, let the car receive its parts through the constructor:
+    One line, but it lives inside the notifier, so every pivot means a new notifier class. **Let's hand the
+    notifier its parts through the constructor instead:**
     """)
     return
 
@@ -215,121 +243,137 @@ def _():
 
 @app.cell
 def _():
-    f1_car_1954 = F1Car_v4(
-        engine=EngineFactory.create_engine_1950s_2_5L_naturally_aspirated_v1(),
-        chassis=ChassisFactory.create_chassis_spaceframe_v1(),
-        wheels=WheelsFactory.create_wheels_v1(),
-        fuel_tank=FuelTankFactory.create_fuel_tank_v1(),
+    sms_notifier = Notifier_v4(
+        channel=ChannelFactory.create_sms_channel_v1(),
+        template=TemplateFactory.create_plain_text_template_v1(),
+        recipients=RecipientListFactory.create_recipient_list_v1(),
+        credit_balance=CreditBalanceFactory.create_credit_balance_v1(),
     )
-    f1_car_1954.start_engine()
-    f1_car_1954.engine.has_started
-    return (f1_car_1954,)
+    sms_notifier.connect()
+    sms_notifier.send("Your order has shipped! 📦")
+    sms_notifier.credit_balance.credits.amount
+    return (sms_notifier,)
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Then twenty-three years of innovation go by, and the car class never changes:
+    **Let's take Pat's next two updates**, and count the edits to `Notifier_v4`:
     """)
     return
 
 
 @app.cell
-def _(f1_car_1954):
-    # 1962: Lotus 25 style, mid-rear engine in a monocoque chassis
-    f1_car_1962 = F1Car_v4(
-        engine=EngineFactory.create_engine_1960s_1_5L_naturally_aspirated_mid_rear_v1(),
-        chassis=ChassisFactory.create_chassis_monocoque_v1(),
-        wheels=WheelsFactory.create_wheels_v1(),
-        fuel_tank=FuelTankFactory.create_fuel_tank_v1(),
+def _(sms_notifier):
+    # Pivot #2: "push notifications are the future"
+    push_notifier = Notifier_v4(
+        channel=ChannelFactory.create_push_channel_v1(),
+        template=TemplateFactory.create_rich_card_template_v1(),
+        recipients=RecipientListFactory.create_recipient_list_v1(),
+        credit_balance=CreditBalanceFactory.create_credit_balance_v1(),
     )
 
-    # 1977: Renault RS01 turbo engine with Lotus 78 ground-effect sidepods
-    f1_car_1977 = F1Car_v4(
-        engine=EngineFactory.create_engine_1970s_1_5L_renault_rs01_v1(),
-        chassis=ChassisFactory.create_chassis_monocoque_with_winged_sidepods_v1(),
-        wheels=WheelsFactory.create_wheels_v1(),
-        fuel_tank=FuelTankFactory.create_fuel_tank_v1(),
+    # Pivot #3: "every enterprise lives in Slack"
+    slack_notifier = Notifier_v4(
+        channel=ChannelFactory.create_slack_channel_v1(),
+        template=TemplateFactory.create_rich_card_template_v1(),
+        recipients=RecipientListFactory.create_recipient_list_v1(),
+        credit_balance=CreditBalanceFactory.create_credit_balance_v1(),
     )
 
-    # Three eras, one class, zero edits to F1Car_v4
-    [type(_car.engine).__name__ for _car in (f1_car_1954, f1_car_1962, f1_car_1977)]
+    # Three pivots, one class, zero edits to Notifier_v4
+    [type(_notifier.channel).__name__ for _notifier in (sms_notifier, push_notifier, slack_notifier)]
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    meme("o_expanding_brain", "Email, SMS, push, Slack, zero edits to Notifier_v4")
     return
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### 🛠️ Build your own car
+    ### 🛠️ Pivot it yourself
 
-    Pick any engine and chassis. `F1Car_v4` takes them all without an edit, *almost*. Try
-    the **1980s turbo (v1)** engine before reading the next section.
+    Pick any channel and template. `Notifier_v4` takes them all without an edit... *almost*. Try
+    **TextBlaster (v1)** before reading the next section.
     """)
     return
 
 
 @app.cell
 def _():
-    engine_picker = mo.ui.dropdown(
+    channel_picker = mo.ui.dropdown(
         options={
-            "1951 · 1.5L supercharged": EngineFactory.create_engine_1950s_1_5L_supercharged_v1,
-            "1954 · 2.5L naturally aspirated": EngineFactory.create_engine_1950s_2_5L_naturally_aspirated_v1,
-            "1962 · 1.5L mid-rear": EngineFactory.create_engine_1960s_1_5L_naturally_aspirated_mid_rear_v1,
-            "1977 · Renault RS01 turbo": EngineFactory.create_engine_1970s_1_5L_renault_rs01_v1,
-            "1980s · 1.5L turbo (v1)": EngineFactory.create_engine_1980s_1_5L_turbocharged_v1,
-            "2014 · 1.6L hybrid turbo": EngineFactory.create_engine_2010s_1_6L_hybrid_turbocharged_v1,
+            "📧 Email": ChannelFactory.create_email_channel_v1,
+            "💬 SMS": ChannelFactory.create_sms_channel_v1,
+            "🔔 Push": ChannelFactory.create_push_channel_v1,
+            "#️⃣ Slack": ChannelFactory.create_slack_channel_v1,
+            "💸 TextBlaster (v1)": ChannelFactory.create_textblaster_sms_channel_v1,
         },
-        value="1954 · 2.5L naturally aspirated",
-        label="Engine",
+        value="💬 SMS",
+        label="Channel",
     )
-    chassis_picker = mo.ui.dropdown(
+    template_picker = mo.ui.dropdown(
         options={
-            "Spaceframe": ChassisFactory.create_chassis_spaceframe_v1,
-            "Monocoque": ChassisFactory.create_chassis_monocoque_v1,
-            "Monocoque with winged sidepods": ChassisFactory.create_chassis_monocoque_with_winged_sidepods_v1,
+            "Plain text": TemplateFactory.create_plain_text_template_v1,
+            "HTML": TemplateFactory.create_html_template_v1,
+            "Rich card": TemplateFactory.create_rich_card_template_v1,
         },
-        value="Spaceframe",
-        label="Chassis",
+        value="Plain text",
+        label="Template",
     )
-    mo.hstack([engine_picker, chassis_picker], justify="start")
-    return chassis_picker, engine_picker
+    mo.hstack([channel_picker, template_picker], justify="start")
+    return channel_picker, template_picker
 
 
 @app.cell
-def _(chassis_picker, engine_picker):
-    _car = F1Car_v4(
-        engine=engine_picker.value(),
-        chassis=chassis_picker.value(),
-        wheels=WheelsFactory.create_wheels_v1(),
-        fuel_tank=FuelTankFactory.create_fuel_tank_v1(),
+def _(channel_picker, template_picker):
+    _notifier = Notifier_v4(
+        channel=channel_picker.value(),
+        template=template_picker.value(),
+        recipients=RecipientListFactory.create_recipient_list_v1(),
+        credit_balance=CreditBalanceFactory.create_credit_balance_v1(),
     )
 
 
-    def _start_and_push():
-        with mo.capture_stdout() as radio:
-            _car.start_engine()
-            _car.push_accelerator(fuel_amount_in_milliliters=50)
-        return f"`F1Car_v4` is running\n\n```text\n{radio.getvalue()}```"
+    def _connect_and_send():
+        with mo.capture_stdout() as output:
+            CampaignRunner_v1().start_campaign(_notifier)
+            _notifier.send("Your order has shipped! 📦")
+        return f"`Notifier_v4` sent it\n\n```text\n{output.getvalue()}```"
 
 
-    outcome(_start_and_push)
+    outcome(_connect_and_send)
     return
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    In this section, we moved the choice of parts out of the car, so a new part no longer means a
-    new car. Well... *almost* any part. Cue the ominous music.
+    In this section, we moved the choice of parts out of the notifier. Well... *almost* any part.
+    Cue the ominous music.
 
     ---
-    ## D: Dependency Inversion, or surviving an engine that starts differently
+    ## D: Dependency Inversion, or surviving a cheaper SMS vendor
 
     > High-level modules should not depend on low-level modules. Both should depend on abstractions.
+    """)
+    return
 
-    **1986.** Every car on the grid runs a 1.5-litre turbo, and our supplier's shiny new one has
-    a tiny change that absolutely nobody mentioned in the handover email: you start it with
-    `start_with_turbocharger()`.
+
+@app.cell(hide_code=True)
+def _():
+    pat("d")
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    TextBlaster's SDK has one tiny difference nobody mentioned on the sales call: `open_socket()` instead of `connect()`.
     """)
     return
 
@@ -340,32 +384,29 @@ def _():
     return
 
 
-@app.cell(hide_code=True)
-def _():
-    mo.md(r"""
-    `F1Car_v4` accepts any engine, so in it goes. `Driver_v1.start_car` just calls `car.start_engine()`:
-    """)
-    return
-
-
 @app.cell
 def _():
-    turbo_car_v1 = F1Car_v4(
-        engine=EngineFactory.create_engine_1980s_1_5L_turbocharged_v1(),
-        chassis=ChassisFactory.create_chassis_monocoque_with_winged_sidepods_v1(),
-        wheels=WheelsFactory.create_wheels_v1(),
-        fuel_tank=FuelTankFactory.create_fuel_tank_v1(),
+    textblaster_notifier_v4 = Notifier_v4(
+        channel=ChannelFactory.create_textblaster_sms_channel_v1(),
+        template=TemplateFactory.create_plain_text_template_v1(),
+        recipients=RecipientListFactory.create_recipient_list_v1(),
+        credit_balance=CreditBalanceFactory.create_credit_balance_v1(),
     )
-    outcome(lambda: Driver_v1().start_car(turbo_car_v1))
+    outcome(lambda: CampaignRunner_v1().start_campaign(textblaster_notifier_v4))
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    meme("d_this_is_fine", "Monday 9:01am, this is fine")
     return
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    The car quietly depends on every engine having `start()`, and nothing enforces it. The
-    tempting race-day patch teaches the car about each engine, undoes Open/Closed, and silently
-    does nothing for any engine it doesn't recognise:
+    The notifier quietly assumed every channel has `connect()`. The tempting Monday-morning patch teaches the
+    notifier about each channel, undoes Open/Closed, and silently skips any channel it doesn't recognise:
     """)
     return
 
@@ -379,9 +420,9 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Dependency Inversion flips the arrow. The car team writes down what it needs from an engine,
-    in its own package (`app/f1_cars/`), and **both sides depend on that abstraction**. The team's
-    own engines already fit and sign up with one line; the supplier's turbo signs up too:
+    **Let's have the notifier team write down what it needs from a channel**, in its own package
+    (`notifications/notifiers/`), so both sides depend on that abstraction. Our own channels already fit;
+    TextBlaster signs up too:
     """)
     return
 
@@ -401,15 +442,14 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    The engine signed the contract but still has no `start()`. The mistake that crashed on
-    the grid now fails in the factory:
+    It signed, but still has no `connect()`. The mistake that took down Monday's campaign now fails in the factory:
     """)
     return
 
 
 @app.cell
 def _():
-    outcome(EngineFactory.create_engine_1980s_1_5L_turbocharged_v2)
+    outcome(ChannelFactory.create_textblaster_sms_channel_v2)
     return
 
 
@@ -422,8 +462,8 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Last, the car names what it depends on. The only change is a type annotation, which also lets
-    a type checker reject an engine that never signed the contract, before anything runs:
+    **Finally, let's have the notifier say out loud what it depends on**, with an import and a type annotation
+    that also lets mypy reject a channel that never signed the contract:
     """)
     return
 
@@ -436,47 +476,55 @@ def _():
 
 @app.cell
 def _():
-    turbo_car_v3 = F1Car_v5(
-        engine=EngineFactory.create_engine_1980s_1_5L_turbocharged_v3(),
-        chassis=ChassisFactory.create_chassis_monocoque_with_winged_sidepods_v1(),
-        wheels=WheelsFactory.create_wheels_v1(),
-        fuel_tank=FuelTankFactory.create_fuel_tank_v1(),
+    textblaster_notifier_v5 = Notifier_v5(
+        channel=ChannelFactory.create_textblaster_sms_channel_v3(),
+        template=TemplateFactory.create_plain_text_template_v1(),
+        recipients=RecipientListFactory.create_recipient_list_v1(),
+        credit_balance=CreditBalanceFactory.create_credit_balance_v1(),
     )
-    Driver_v1().start_car(turbo_car_v3)  # the same Driver_v1, and a car that never learned about turbos
-    turbo_car_v3.engine.has_started
+    CampaignRunner_v1().start_campaign(textblaster_notifier_v5)  # the same runner, a notifier that's never heard of TextBlaster
+    textblaster_notifier_v5.channel.is_connected
     return
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    In this section, we flipped the dependency so the car and the engines both depend on a
-    contract. The ABC turns away an engine that signs but doesn't deliver, and a type checker
-    rejects one that never signed at all.
+    In this section, we flipped the dependency so the notifier and the channels both depend on a contract.
+    The ABC turns away a channel that signs but doesn't deliver, and a type checker rejects one that never signed.
 
     /// admonition | ABC or `typing.Protocol`?
-    A `Protocol` describes the same contract structurally, with no subclassing, and a type
-    checker enforces it before the code runs. An ABC is enforced at runtime, when the object
-    is created. We use ABCs because watching the factory refuse a broken engine is the lesson.
+    A `Protocol` describes the same contract structurally, with no subclassing, and a type checker enforces it
+    before the code runs. An ABC is enforced at runtime, when the object is created. We use ABCs because watching
+    the factory turn away a broken channel is the lesson.
     ///
 
     ---
-    ## L: Liskov Substitution, or how a hybrid quietly broke everyone's code
+    ## L: Liskov Substitution, or how AI quietly broke compliance
 
     > If S is a subtype of T, then objects of type T may be replaced with objects of type S
     > without altering any of the desirable properties of the program.
+    """)
+    return
 
-    In plain English: if your code works with a class, it should keep working when you hand it a
-    subclass. No surprises, and no "well, *technically* it's still a car". Liskov and Wing break
-    that down into three rules:
+
+@app.cell(hide_code=True)
+def _():
+    pat("l")
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    In plain English: hand your code a subclass, and nothing should break. Liskov and Wing's three rules:
 
     1. **Signature rule:** implement every method with compatible types, and raise no new exceptions.
     2. **Properties rule:** keep the parent's invariants and history.
     3. **Methods rule:** don't strengthen preconditions or weaken postconditions.
 
-    Python checks very little of this: an ABC checks that methods exist, a type checker checks
-    signatures, and nothing checks the rest. By the late 1980s the car has telemetry and an
-    interface whose docstrings make promises, including an invariant and a history:
+    Python checks very little of this: an ABC checks that methods exist, a type checker checks annotated signatures, and
+    the rest is on you. Our notifiers have an audit log now, and an interface whose docstrings make promises:
     """)
     return
 
@@ -502,8 +550,7 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    **2014.** The hybrid era: a 1.6-litre turbo, a battery, and an energy recovery system whose
-    MGU-H turns exhaust heat into electricity that can be deployed as a boost. The hybrid subclasses the telemetry car, and it was ported in a hurry:
+    Then the board asks about AI, and the AI notifier gets built between Wednesday lunch and Friday at 5pm:
     """)
     return
 
@@ -516,48 +563,54 @@ def _():
 
 @app.cell(hide_code=True)
 def _():
-    mo.md(r"""
-    ### Signature rule: no new exceptions
-
-    The battery leaves the garage flat, and the hybrid boosts on every push:
-    """)
-    return
-
-
-@app.cell
-def _():
-    def _drive_flat_battery_hybrid():
-        hybrid = build_hybrid_car(HybridF1Car_v1)  # the battery leaves the garage flat
-        driver = Driver_v2()
-        driver.start_car(hybrid)
-        driver.accelerate_car(hybrid, fuel_amount_in_milliliters=50)
-
-
-    outcome(_drive_flat_battery_hybrid)
+    meme("l_two_buttons", "Keep the compliance contract, or ship AI by Friday")
     return
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### Properties rule: keep the invariants
+    ### 1. Signature rule: no surprise exceptions
 
-    Charge the battery. No crash, but the car never refuses to start, so the driver never
-    enables telemetry, and the engine runs unrecorded:
+    The token budget starts empty, and the AI notifier rewrites every message by default:
     """)
     return
 
 
 @app.cell
 def _():
-    _hybrid = build_hybrid_car(HybridF1Car_v1, battery_charge_in_kilojoules=4_000)
-    _driver = Driver_v2()
-    _driver.start_car(_hybrid)  # no TelemetryNotEnabledError, so the driver never enables telemetry
-    _driver.accelerate_car(_hybrid, fuel_amount_in_milliliters=50)
+    def _first_campaign_message():
+        ai_notifier = build_ai_notifier(AiNotifier_v1)  # the token budget starts empty
+        runner = CampaignRunner_v2()
+        runner.start_campaign(ai_notifier)
+        runner.send_message(ai_notifier, "Your order has shipped! 📦")
+
+
+    outcome(_first_campaign_message)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    ### 2. Properties rule: keep the invariants
+
+    **Fine, let's top up the tokens.** No crash, but the notifier never refuses to connect, so the runner
+    never enables the audit log:
+    """)
+    return
+
+
+@app.cell
+def _():
+    _ai_notifier = build_ai_notifier(AiNotifier_v1, tokens=4_000)
+    _runner = CampaignRunner_v2()
+    _runner.start_campaign(_ai_notifier)  # no AuditLogDisabledError, so the runner never enables the audit log
+    _runner.send_message(_ai_notifier, "Your order has shipped! 📦")
     {
-        "engine running": _hybrid.engine.has_started,
-        "telemetry recording": _hybrid.telemetry_system.is_enabled,
-        "telemetry logs": _hybrid.get_telemetry_logs(),
+        "connected": _ai_notifier.channel.is_connected,
+        "audit log enabled": _ai_notifier.audit_log.is_enabled,
+        "audit log": _ai_notifier.get_audit_log(),
     }
     return
 
@@ -565,28 +618,27 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### Properties rule: keep the history
+    ### 3. Properties rule: keep the history
 
-    The log should only grow. Enable telemetry by hand, push once and note the first snapshot,
-    then push nine more times:
+    The audit log is append-only. **Let's enable it by hand**, send once and note the first entry, then send nine more:
     """)
     return
 
 
 @app.cell
 def _():
-    _hybrid = build_hybrid_car(HybridF1Car_v1, battery_charge_in_kilojoules=4_000)
-    _driver = Driver_v2()
-    _driver.start_car(_hybrid)
-    _hybrid.enable_telemetry()  # enable it by hand this time
-    _driver.accelerate_car(_hybrid, fuel_amount_in_milliliters=50)
-    _first_snapshot = _hybrid.get_telemetry_logs()[0]
+    _ai_notifier = build_ai_notifier(AiNotifier_v1, tokens=4_000)
+    _runner = CampaignRunner_v2()
+    _runner.start_campaign(_ai_notifier)
+    _ai_notifier.enable_audit_log()  # enable it by hand this time
+    _runner.send_message(_ai_notifier, "Your order has shipped! 📦")
+    _first_entry = _ai_notifier.get_audit_log()[0]
     for _ in range(9):
-        _driver.accelerate_car(_hybrid, fuel_amount_in_milliliters=50)
+        _runner.send_message(_ai_notifier, "Your order has shipped! 📦")
 
     {
-        "first snapshot still in the log": _first_snapshot in _hybrid.get_telemetry_logs(),
-        "snapshots reported": len(_hybrid.get_telemetry_logs()),
+        "first entry still in the audit log": _first_entry in _ai_notifier.get_audit_log(),
+        "entries reported": len(_ai_notifier.get_audit_log()),
     }
     return
 
@@ -594,36 +646,38 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### Methods rule: don't strengthen preconditions
+    ### 4. Methods rule: don't get pickier (preconditions)
 
-    The parent accepts any amount of fuel. Slide the amount and compare the hurried hybrid
-    with the fixed one (`HybridF1Car_v2`, shown further down):
+    The parent sends a message of any length. Slide the length past 160 characters and compare the Friday
+    AI notifier with the fixed one (`AiNotifier_v2`, shown further down):
     """)
     return
 
 
 @app.cell
 def _():
-    fuel_per_push = mo.ui.slider(start=1, stop=20, value=8, label="Fuel per push (mL)", show_value=True)
-    fuel_per_push
-    return (fuel_per_push,)
+    message_length = mo.ui.slider(start=10, stop=400, step=10, value=200, label="Message length (characters)", show_value=True)
+    message_length
+    return (message_length,)
 
 
 @app.cell
-def _(fuel_per_push):
-    def _push(car_class):
-        car = build_hybrid_car(car_class, battery_charge_in_kilojoules=4_000)
-        driver = Driver_v2()
-        car.enable_telemetry()
-        driver.start_car(car)
-        driver.accelerate_car(car, fuel_amount_in_milliliters=fuel_per_push.value)
-        return f"Drew {fuel_per_push.value}mL from the tank, {car.fuel_tank.current_fuel_in_tank.amount_in_milliliters}mL left"
+def _(message_length):
+    def _send(notifier_class):
+        notifier = build_ai_notifier(notifier_class, tokens=4_000)
+        notifier.enable_audit_log()
+        CampaignRunner_v2().start_campaign(notifier)
+        message = ("Everything must go! " * 20)[: message_length.value]
+        credits_before = notifier.credit_balance.credits.amount
+        notifier.send(message)
+        charged = credits_before - notifier.credit_balance.credits.amount
+        return f"Sent {len(message)} characters in {len(segments_of(message))} segment(s) for {charged} credit(s)"
 
 
     mo.hstack(
         [
-            mo.vstack([mo.md("**`HybridF1Car_v1`**"), outcome(lambda: _push(HybridF1Car_v1))]),
-            mo.vstack([mo.md("**`HybridF1Car_v2`**"), outcome(lambda: _push(HybridF1Car_v2))]),
+            mo.vstack([mo.md("**`AiNotifier_v1`**"), outcome(lambda: _send(AiNotifier_v1))]),
+            mo.vstack([mo.md("**`AiNotifier_v2`**"), outcome(lambda: _send(AiNotifier_v2))]),
         ],
         widths="equal",
     )
@@ -633,24 +687,24 @@ def _(fuel_per_push):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### Methods rule: don't weaken postconditions
+    ### 5. Methods rule: don't promise less (postconditions)
 
-    `average_fuel_used_per_push` (defined at the top of this notebook) relies on every snapshot
-    including `fuel_in_milliliters`:
+    Compliance's billing report (`average_credits_per_send`, defined at the top of this notebook) relies on
+    every audit entry including `credits_remaining`:
     """)
     return
 
 
 @app.cell
 def _():
-    _hybrid = build_hybrid_car(HybridF1Car_v1, battery_charge_in_kilojoules=4_000)
-    _hybrid.enable_telemetry()
-    _driver = Driver_v2()
-    _driver.start_car(_hybrid)
+    _ai_notifier = build_ai_notifier(AiNotifier_v1, tokens=4_000)
+    _ai_notifier.enable_audit_log()
+    _runner = CampaignRunner_v2()
+    _runner.start_campaign(_ai_notifier)
     for _ in range(10):
-        _driver.accelerate_car(_hybrid, fuel_amount_in_milliliters=50)
+        _runner.send_message(_ai_notifier, "Your order has shipped! 📦")
 
-    outcome(lambda: average_fuel_used_per_push(_hybrid.get_telemetry_logs()))
+    outcome(lambda: average_credits_per_send(_ai_notifier.get_audit_log()))
     return
 
 
@@ -659,8 +713,8 @@ def _():
     mo.md(r"""
     ### The fix: keep the promises inside the subtype
 
-    Don't patch every caller. The hybrid made the promises when it subclassed the telemetry
-    car, so the hybrid keeps them:
+    Don't patch every caller. The AI notifier made these promises when it subclassed `AuditedNotifier_v1`,
+    so the AI notifier keeps them:
     """)
     return
 
@@ -673,19 +727,19 @@ def _():
 
 @app.cell
 def _():
-    _cars = [
-        build_telemetry_car(F1CarWithTelemetry_v1),
-        build_hybrid_car(HybridF1Car_v2),  # flat battery again
+    _notifiers = [
+        build_audited_notifier(AuditedNotifier_v1),
+        build_ai_notifier(AiNotifier_v2, tokens=4_000),  # AI rewrites on this time
     ]
-    _driver = Driver_v2()  # not a single line of the driver has changed
-    for _car in _cars:
-        _driver.start_car(_car)
+    _runner = CampaignRunner_v2()  # not a single line of the runner has changed
+    for _notifier in _notifiers:
+        _runner.start_campaign(_notifier)
         for _ in range(10):
-            _driver.accelerate_car(_car, fuel_amount_in_milliliters=8)
+            _runner.send_message(_notifier, BIG_SALE_PROMO)
 
     {
-        "telemetry logs": [len(_car.get_telemetry_logs()) for _car in _cars],
-        "average fuel per push": [average_fuel_used_per_push(_car.get_telemetry_logs()) for _car in _cars],
+        "audit entries": [len(_notifier.get_audit_log()) for _notifier in _notifiers],
+        "average credits per send": [average_credits_per_send(_notifier.get_audit_log()) for _notifier in _notifiers],
     }
     return
 
@@ -693,18 +747,28 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    In this section, the rushed hybrid ran fine on its own; it was everyone relying on its contract
-    who ended up in the gravel. Tools can check that methods exist and signatures line up, but
-    everything else lives in docstrings and tests, and a subclass has to honour those too.
+    In this section, the rushed AI notifier worked fine on its own; it was everyone relying on its contract who
+    got paged. Tools can check that methods exist and signatures line up, but everything else lives in docstrings
+    and tests, and a subclass has to honour those too.
 
     ---
-    ## I: Interface Segregation, or one driver and three generations of car
+    ## I: Interface Segregation, or three pricing plans and one very small factory
 
     > Clients should not be forced to depend on methods they do not use.
+    """)
+    return
 
-    **Heritage demo day.** One driver, three generations of car, one very long afternoon: a 1950s
-    car, the 1980s telemetry car and the 2014 hybrid. A 1950s car can't implement `F1CarInterface`
-    with a straight face:
+
+@app.cell(hide_code=True)
+def _():
+    pat("i")
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    The legacy email plan predates compliance, so it can't implement `NotifierInterface` with a straight face:
     """)
     return
 
@@ -717,8 +781,14 @@ def _():
 
 @app.cell(hide_code=True)
 def _():
+    meme("i_same_picture", "They're the same picture: two empty audit logs")
+    return
+
+
+@app.cell(hide_code=True)
+def _():
     mo.md(r"""
-    And the driver who wants the hybrid's boost has to check concrete classes:
+    And a runner that wants to save AI tokens for the big announcement has to check concrete classes:
     """)
     return
 
@@ -732,10 +802,10 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    The interface is too big (three capabilities not every car has) and too small (no way to say
-    a car can boost). Split it into one interface per capability, add the missing one, and let
-    each car sign up for what it can actually do. `StartableInterface` documents `StartRefusedError`,
-    and `TelemetryNotEnabledError` subclasses it, so telemetry cars stay honest `Startable`s:
+    The interface is too big (three capabilities not every plan has) and too small (no way to say a plan can do
+    AI rewrites). **Let's split it into one interface per capability, and add the missing one.**
+    `ConnectableInterface` documents `ConnectRefusedError`, and `AuditLogDisabledError` subclasses it, so audited
+    notifiers stay honest `Connectable`s:
     """)
     return
 
@@ -755,8 +825,8 @@ def _():
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    Drivers are written per set of capabilities, and a factory picks one by asking about
-    interfaces rather than concrete classes:
+    Pat asked for one campaign runner. Pat is getting one factory and three tiny runners.
+    **Let's write a runner for each set of capabilities**, and let a factory pick one by asking about interfaces:
     """)
     return
 
@@ -775,59 +845,59 @@ def _():
 
 @app.cell
 def _():
-    _heritage_cars = [
-        build_1950s_car(F1Car_v7),
-        build_telemetry_car(F1CarWithTelemetry_v2),
-        build_hybrid_car(HybridF1Car_v3, battery_charge_in_kilojoules=4_000),
+    _demo_plans = [
+        build_legacy_notifier(Notifier_v7),
+        build_audited_notifier(AuditedNotifier_v2),
+        build_ai_notifier(AiNotifier_v3, tokens=4_000),
     ]
-    for _car in _heritage_cars:
-        _driver = DriverFactory.create_driver_for(_car)
-        _driver.start_car(_car)
-        _driver.accelerate_car(_car, fuel_amount_in_milliliters=50)
-        _driver.overtake(_car, fuel_amount_in_milliliters=100)
+    for _notifier in _demo_plans:
+        _runner = CampaignRunnerFactory.create_runner_for(_notifier)
+        _runner.start_campaign(_notifier)
+        _runner.send_message(_notifier, "Your order has shipped! 📦")
+        _runner.send_big_announcement(_notifier, "🎉 We're live in 40 countries!")
 
-    [type(DriverFactory.create_driver_for(_car)).__name__ for _car in _heritage_cars]
+    [type(CampaignRunnerFactory.create_runner_for(_notifier)).__name__ for _notifier in _demo_plans]
     return
 
 
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    ### 🏁 Take a car out
+    ### 🤝 Run the demo yourself
 
-    Pick a car, and `DriverFactory` picks the driver. The team radio shows what happened.
+    Pick a plan, and `CampaignRunnerFactory` picks the runner. The console shows what happened.
     """)
     return
 
 
 @app.cell
 def _():
-    car_picker = mo.ui.dropdown(
+    plan_picker = mo.ui.dropdown(
         options={
-            "1950s car · F1Car_v7": lambda: build_1950s_car(F1Car_v7),
-            "1980s telemetry car · F1CarWithTelemetry_v2": lambda: build_telemetry_car(F1CarWithTelemetry_v2),
-            "2014 hybrid · HybridF1Car_v3": lambda: build_hybrid_car(HybridF1Car_v3, battery_charge_in_kilojoules=4_000),
+            "Legacy email plan · Notifier_v7": lambda: build_legacy_notifier(Notifier_v7),
+            "Compliance plan · AuditedNotifier_v2": lambda: build_audited_notifier(AuditedNotifier_v2),
+            "AI plan · AiNotifier_v3": lambda: build_ai_notifier(AiNotifier_v3, tokens=4_000),
         },
-        value="2014 hybrid · HybridF1Car_v3",
-        label="Heritage car",
+        value="AI plan · AiNotifier_v3",
+        label="Plan",
     )
-    car_picker
-    return (car_picker,)
+    plan_picker
+    return (plan_picker,)
 
 
 @app.cell
-def _(car_picker):
-    _car = car_picker.value()
-    _driver = DriverFactory.create_driver_for(_car)
-    with mo.capture_stdout() as _radio:
-        _driver.start_car(_car)
-        _driver.accelerate_car(_car, fuel_amount_in_milliliters=50)
-        _driver.overtake(_car, fuel_amount_in_milliliters=100)
+def _(plan_picker):
+    _notifier = plan_picker.value()
+    _runner = CampaignRunnerFactory.create_runner_for(_notifier)
+    with mo.capture_stdout() as _console:
+        _runner.start_campaign(_notifier)
+        _runner.send_message(_notifier, "Your order has shipped! 📦")
+        _runner.send_big_announcement(_notifier, "🎉 We're live in 40 countries!")
 
     mo.vstack(
         [
-            mo.md(f"`DriverFactory` picked **`{type(_driver).__name__}`**"),
-            mo.plain_text(_radio.getvalue()),
+            mo.md(f"`CampaignRunnerFactory` picked **`{type(_runner).__name__}`**"),
+            mo.plain_text(_console.getvalue()),
         ]
     )
     return
@@ -836,23 +906,37 @@ def _(car_picker):
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
-    In this section, we split one bloated interface into small ones, so every car keeps its promises
-    honestly. The trade-off: a genuinely new *combination* of capabilities still needs a new driver
-    and one branch in `DriverFactory`, but that's a small edit in one place, against abstractions.
+    In this section, we split one bloated interface into small ones, so every plan keeps its promises honestly.
+    The trade-off: a genuinely new *combination* of capabilities still needs a new runner and one branch in
+    `CampaignRunnerFactory`, but that's a small edit in one place, against abstractions.
 
     ---
     ## Conclusion
 
+    The demo went great. Then, the following Monday:
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.vstack([pat("outro"), meme("outro_stonks", "Stonks: one line in wiring.py")])
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
     Thanks for playing along, and hopefully, SOLID has clicked! Each fix made the next one possible:
 
-    - **Single Responsibility** took construction out of the car, which let us hand the car its parts.
-    - **Open/Closed** let the car take any part without being edited, but "any part" was an unchecked assumption.
-    - **Dependency Inversion** turned the assumption into a contract, and moved the failure from the grid to the factory, or the type checker.
-    - **Liskov Substitution** made the contract mean something: subtypes keep the promises, not just the signatures.
-    - **Interface Segregation** kept contracts small enough for every car to keep honestly.
+    - **Single Responsibility** took construction out of the notifier, which let us hand the notifier its parts.
+    - **Open/Closed** let the notifier take any channel without being edited, but "any channel" was an unchecked assumption.
+    - **Dependency Inversion** turned the assumption into a contract, and moved the failure from production to the factory, or the type checker.
+    - **Liskov Substitution** made the contract mean something: subtypes keep the promises, not just the method names.
+    - **Interface Segregation** kept contracts small enough for every plan to keep honestly.
 
-    F1 teams don't win by predicting next season's rules; they win by building cars that can take
-    whatever the rulebook throws at them. Now go break a contract and see who ends up in the barriers!
+    Pat will never stop changing the requirements, and honestly, that's Pat's job. Now go break a contract and
+    see who gets paged!
     """)
     return
 

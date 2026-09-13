@@ -1,1 +1,0 @@
-from app.energy_recovery_system.factory import EnergyRecoverySystemFactory

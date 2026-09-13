@@ -1,9 +1,9 @@
 # ...continuing from the previous snippet
-def average_fuel_used_per_push(telemetry_logs):
-    """Pit wall code, written against the promise in F1CarInterface.get_current_telemetry."""
-    fuel = [log["fuel_in_milliliters"] for log in telemetry_logs]
-    return (fuel[0] - fuel[-1]) / (len(fuel) - 1)
+def average_credits_per_send(audit_log):
+    """Compliance's billing report, written against the promise in NotifierInterface.get_current_audit_entry."""
+    credits = [entry["credits_remaining"] for entry in audit_log]
+    return (credits[0] - credits[-1]) / (len(credits) - 1)
 
 
-average_fuel_used_per_push(hybrid.get_telemetry_logs())
-# raises: KeyError: 'fuel_in_milliliters'
+average_credits_per_send(ai_notifier.get_audit_log())
+# raises: KeyError: 'credits_remaining'

@@ -1,17 +1,17 @@
-# ...continuing: build_hybrid_car, Driver_v2 and average_fuel_used_per_push come from the snippets above
-from app.f1_cars.f1_car_with_telemetry_v1 import F1CarWithTelemetry_v1
-from app.f1_cars.hybrid_f1_car_v2 import HybridF1Car_v2
-from app.garage import build_telemetry_car
+# ...continuing: build_ai_notifier, CampaignRunner_v2, BIG_SALE_PROMO and average_credits_per_send come from above
+from notifications.notifiers.ai_notifier_v2 import AiNotifier_v2
+from notifications.notifiers.audited_notifier_v1 import AuditedNotifier_v1
+from notifications.wiring import build_audited_notifier
 
-cars = [
-    build_telemetry_car(F1CarWithTelemetry_v1),
-    build_hybrid_car(HybridF1Car_v2),  # flat battery again
+notifiers = [
+    build_audited_notifier(AuditedNotifier_v1),
+    build_ai_notifier(AiNotifier_v2, tokens=4_000),  # AI rewrites on this time
 ]
-driver = Driver_v2()  # not a single line of the driver has changed
-for car in cars:
-    driver.start_car(car)
+runner = CampaignRunner_v2()  # not a single line of the runner has changed
+for notifier in notifiers:
+    runner.start_campaign(notifier)
     for _ in range(10):
-        driver.accelerate_car(car, fuel_amount_in_milliliters=8)
+        runner.send_message(notifier, BIG_SALE_PROMO)
 
-[len(car.get_telemetry_logs()) for car in cars]  # -> [10, 10]
-[average_fuel_used_per_push(car.get_telemetry_logs()) for car in cars]  # -> [8.0, 8.0]
+[len(notifier.get_audit_log()) for notifier in notifiers]  # -> [10, 10]
+[average_credits_per_send(notifier.get_audit_log()) for notifier in notifiers]  # -> [2.0, 2.0]

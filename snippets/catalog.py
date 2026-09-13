@@ -80,7 +80,7 @@ def _unified_diff(base, source):
 
 
 def verify_all():
-    """Raise AssertionError if any snippet has drifted from the code in app/."""
+    """Raise AssertionError if any snippet has drifted from the code in notifications/."""
     snippets = load_snippets()
     ids = [snippet.id for snippet in snippets]
     assert len(ids) == len(set(ids)), f"Duplicate snippet ids in {MANIFEST_PATH.name}"
@@ -100,24 +100,24 @@ def verify_all():
 
 
 def verify_excerpt(snippet):
-    """Every class in the excerpt must have the same bases as in app/, and every method that isn't `...` must match."""
+    """Every class in the excerpt must have the same bases as in notifications/, and every method that isn't `...` must match."""
     source = snippet.content()
     exec(compile(source, snippet.source, "exec"), {"__name__": "snippets"})
 
     app_classes = _app_classes()
     for excerpt_class in _classes(ast.parse(source)):
-        assert excerpt_class.name in app_classes, f"{snippet.id}: class {excerpt_class.name} is not in app/"
+        assert excerpt_class.name in app_classes, f"{snippet.id}: class {excerpt_class.name} is not in notifications/"
         app_class = app_classes[excerpt_class.name]
         assert _dump(excerpt_class.bases) == _dump(app_class.bases), (
-            f"{snippet.id}: {excerpt_class.name} has different base classes in app/"
+            f"{snippet.id}: {excerpt_class.name} has different base classes in notifications/"
         )
         app_methods = {node.name: node for node in app_class.body if isinstance(node, ast.FunctionDef)}
         for method in excerpt_class.body:
             if not isinstance(method, ast.FunctionDef) or _is_elided(method.body):
                 continue
-            assert method.name in app_methods, f"{snippet.id}: {excerpt_class.name}.{method.name} is not in app/"
+            assert method.name in app_methods, f"{snippet.id}: {excerpt_class.name}.{method.name} is not in notifications/"
             assert _dump(method) == _dump(app_methods[method.name]), (
-                f"{snippet.id}: {excerpt_class.name}.{method.name} differs from app/"
+                f"{snippet.id}: {excerpt_class.name}.{method.name} differs from notifications/"
             )
 
 
@@ -174,9 +174,9 @@ def _comments_by_line(source):
 
 def _app_classes():
     classes = {}
-    for path in sorted((ROOT / "app").rglob("*.py")):
+    for path in sorted((ROOT / "notifications").rglob("*.py")):
         for node in _classes(ast.parse(path.read_text())):
-            assert node.name not in classes, f"Class {node.name} is defined twice in app/"
+            assert node.name not in classes, f"Class {node.name} is defined twice in notifications/"
             classes[node.name] = node
     return classes
 

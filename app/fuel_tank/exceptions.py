@@ -1,2 +1,0 @@
-class NotEnoughFuelError(Exception):
-    pass

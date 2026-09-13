@@ -2,7 +2,7 @@
 
 Gist ids are recorded in snippets/gists.json, so running this again updates the
 existing gists in place instead of creating duplicates. Snippets are verified
-against app/ before anything is published.
+against notifications/ before anything is published.
 
     uv run python scripts/publish_gists.py             # publish every snippet
     uv run python scripts/publish_gists.py S1 L4       # publish some snippets
@@ -88,7 +88,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
-    print("Verifying snippets against app/ ...")
+    print("Verifying snippets against notifications/ ...")
     with contextlib.redirect_stdout(io.StringIO()):
         catalog.verify_all()
 

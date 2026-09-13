@@ -1,0 +1,1 @@
+from notifications.templates.factory import TemplateFactory

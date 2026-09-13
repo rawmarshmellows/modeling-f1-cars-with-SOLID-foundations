@@ -16,6 +16,13 @@ def test_the_article_embeds_every_snippet_exactly_once():
     assert sorted(embedded) == sorted(snippet.id for snippet in catalog.load_snippets())
 
 
+def test_the_article_uses_every_image_exactly_once_and_they_all_exist():
+    template = (ROOT / "article" / "article.template.md").read_text()
+    embedded = [path for path, _alt in re.findall(r"\{\{image:([\w/]+)\|([^}]+)\}\}", template)]
+    rendered = sorted(str(path.relative_to(ROOT / "images").with_suffix("")) for path in (ROOT / "images").rglob("*.png"))
+    assert sorted(embedded) == rendered
+
+
 def _script(tmp_path, code):
     path = tmp_path / "snippet.py"
     path.write_text(code)
@@ -40,7 +47,7 @@ def test_a_missing_exception_fails(tmp_path):
 
 def test_an_excerpt_that_drifts_from_app_fails(tmp_path):
     path = tmp_path / "excerpt.py"
-    path.write_text("class F1Car_v4:\n    def start_engine(self):\n        self.engine.start_with_turbocharger()\n")
+    path.write_text("class Notifier_v4:\n    def connect(self):\n        self.channel.open_socket()\n")
     excerpt = Snippet(id="X2", kind="excerpt", source=str(path), filename="excerpt.py", description="")
-    with pytest.raises(AssertionError, match="F1Car_v4.start_engine differs"):
+    with pytest.raises(AssertionError, match="Notifier_v4.connect differs"):
         catalog.verify_excerpt(excerpt)
