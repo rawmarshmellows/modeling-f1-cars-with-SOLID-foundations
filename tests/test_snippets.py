@@ -6,7 +6,7 @@ from snippets import catalog
 from snippets.catalog import ROOT, Snippet
 
 
-def test_every_snippet_matches_the_code_in_app():
+def test_every_snippet_matches_the_code_in_notifications():
     catalog.verify_all()
 
 
@@ -45,7 +45,7 @@ def test_a_missing_exception_fails(tmp_path):
         catalog.run_script(_script(tmp_path, "1 + 1\n# raises: ZeroDivisionError: division by zero\n"), {})
 
 
-def test_an_excerpt_that_drifts_from_app_fails(tmp_path):
+def test_an_excerpt_that_drifts_from_notifications_fails(tmp_path):
     path = tmp_path / "excerpt.py"
     path.write_text("class Notifier_v4:\n    def connect(self):\n        self.channel.open_socket()\n")
     excerpt = Snippet(id="X2", kind="excerpt", source=str(path), filename="excerpt.py", description="")

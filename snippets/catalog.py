@@ -104,19 +104,19 @@ def verify_excerpt(snippet):
     source = snippet.content()
     exec(compile(source, snippet.source, "exec"), {"__name__": "snippets"})
 
-    app_classes = _app_classes()
+    package_classes = _package_classes()
     for excerpt_class in _classes(ast.parse(source)):
-        assert excerpt_class.name in app_classes, f"{snippet.id}: class {excerpt_class.name} is not in notifications/"
-        app_class = app_classes[excerpt_class.name]
-        assert _dump(excerpt_class.bases) == _dump(app_class.bases), (
+        assert excerpt_class.name in package_classes, f"{snippet.id}: class {excerpt_class.name} is not in notifications/"
+        package_class = package_classes[excerpt_class.name]
+        assert _dump(excerpt_class.bases) == _dump(package_class.bases), (
             f"{snippet.id}: {excerpt_class.name} has different base classes in notifications/"
         )
-        app_methods = {node.name: node for node in app_class.body if isinstance(node, ast.FunctionDef)}
+        package_methods = {node.name: node for node in package_class.body if isinstance(node, ast.FunctionDef)}
         for method in excerpt_class.body:
             if not isinstance(method, ast.FunctionDef) or _is_elided(method.body):
                 continue
-            assert method.name in app_methods, f"{snippet.id}: {excerpt_class.name}.{method.name} is not in notifications/"
-            assert _dump(method) == _dump(app_methods[method.name]), (
+            assert method.name in package_methods, f"{snippet.id}: {excerpt_class.name}.{method.name} is not in notifications/"
+            assert _dump(method) == _dump(package_methods[method.name]), (
                 f"{snippet.id}: {excerpt_class.name}.{method.name} differs from notifications/"
             )
 
@@ -172,7 +172,7 @@ def _comments_by_line(source):
     return {token.start[0]: token.string for token in tokens if token.type == tokenize.COMMENT}
 
 
-def _app_classes():
+def _package_classes():
     classes = {}
     for path in sorted((ROOT / "notifications").rglob("*.py")):
         for node in _classes(ast.parse(path.read_text())):
